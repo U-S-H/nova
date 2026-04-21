@@ -2,121 +2,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NOVA OMNI | Worldwide Institutional Terminal</title>
+    <title>NOVA OMNI | Global Institutional Terminal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #010409; --card: #0d1117; --accent: #00ff88; --text: #f0f6fc; --dim: #8b949e; --gold: #f2cc60; --danger: #ff4d4d; }
         body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; padding-bottom: 100px; }
         
-        /* Global Ticker */
-        #global-ticker { background: #161b22; color: var(--accent); padding: 10px; font-size: 10px; font-weight: 800; white-space: nowrap; overflow: hidden; border-bottom: 1px solid #30363d; }
-        .ticker-wrap { display: inline-block; animation: drift 30s linear infinite; }
-        @keyframes drift { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        /* Modern Glass UI */
+        .glass { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 35px; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        input { width: 100%; padding: 18px; background: #161b22; border: 1px solid #30363d; color: #fff; border-radius: 20px; margin-bottom: 12px; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--accent); }
+        .btn-prime { width: 100%; padding: 18px; background: var(--accent); color: #000; border: none; border-radius: 20px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
 
-        /* Login System */
-        #auth-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; background: radial-gradient(circle at top, #0a2e1f, #010409); }
-        .logo-box h1 { font-size: 4rem; margin: 0; letter-spacing: -4px; cursor: pointer; user-select: none; transition: 0.3s; }
-        .glass { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 40px; padding: 35px; width: 100%; max-width: 400px; box-shadow: 0 25px 60px rgba(0,0,0,0.6); }
-        input { width: 100%; padding: 18px; background: #161b22; border: 1px solid #30363d; color: #fff; border-radius: 22px; margin-bottom: 15px; outline: none; }
-        .btn-prime { width: 100%; padding: 20px; background: var(--accent); color: #000; border: none; border-radius: 22px; font-weight: 900; cursor: pointer; text-transform: uppercase; box-shadow: 0 10px 20px rgba(0,255,136,0.2); }
+        /* Nodes Styling */
+        .node-card { background: var(--card); border-radius: 30px; padding: 15px; border: 1px solid #30363d; position: relative; overflow: hidden; }
+        .node-img { width: 100%; height: 120px; border-radius: 20px; object-fit: cover; margin-bottom: 10px; background: #161b22; }
+        .timer-badge { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.7); color: var(--gold); padding: 4px 10px; border-radius: 50px; font-size: 10px; font-weight: 800; border: 1px solid var(--gold); }
+        .profit-line { display: flex; justify-content: space-between; font-size: 11px; margin-top: 8px; color: var(--dim); }
 
-        /* Hero & Dashboard */
-        .mining-hero { background: linear-gradient(135deg, #00ff88, #008f4c); border-radius: 40px; padding: 30px; margin: 15px; color: #000; position: relative; overflow: hidden; }
-        .reward-btn { position: absolute; top: 15px; right: 15px; background: #000; color: #fff; border: none; padding: 8px 12px; border-radius: 50px; font-size: 10px; font-weight: 900; cursor: pointer; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        
-        .m-bar-bg { background: rgba(0,0,0,0.1); height: 8px; border-radius: 10px; overflow: hidden; margin: 15px 0; }
-        .m-bar-fill { height: 100%; width: 0%; background: #fff; box-shadow: 0 0 15px #fff; }
+        /* Animation */
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        .live-dot { height: 8px; width: 8px; background: var(--accent); border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
 
-        /* Admin UI */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; padding: 20px; overflow-y: auto; }
-        .adm-card { background: #161b22; border-left: 4px solid var(--accent); padding: 15px; border-radius: 15px; margin-bottom: 15px; }
-
-        /* Nav & Screens */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: rgba(13, 17, 23, 0.98); display: flex; justify-content: space-around; padding: 20px 0; border-top: 1px solid #30363d; z-index: 1000; }
+        /* Navigation */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: rgba(13, 17, 23, 0.95); display: flex; justify-content: space-around; padding: 18px 0; border-top: 1px solid #30363d; z-index: 1000; backdrop-filter: blur(10px); }
         .nav-item { color: var(--dim); font-size: 10px; text-align: center; font-weight: 800; }
         .nav-item.active { color: var(--accent); }
-        .screen { display: none; padding-top: 10px; }
-        .active-screen { display: block; animation: fadeIn 0.4s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .screen { display: none; }
+        .active-screen { display: block; }
     </style>
 </head>
 <body>
 
-    <div id="global-ticker">
-        <div class="ticker-wrap">🌐 NOVA OMNI: MARKET STATUS OPTIMAL • BTC $64,210 • TOTAL ASSETS $14,502,192 • LIVE PAYOUTS ACTIVE • 🌐</div>
+    <div style="background:#161b22; color:var(--accent); padding:10px; font-size:10px; font-weight:800; white-space:nowrap; overflow:hidden;">
+        <div style="display:inline-block; animation: drift 30s linear infinite;"> 🚀 NOVA OMNI: SYSTEM SECURED • 24H VOLUME: $2.4M • NEW NODES V.21 DEPLOYED • WORLDWIDE PAYOUTS ARE LIVE • 🚀 </div>
     </div>
 
-    <div id="auth-screen">
-        <div class="logo-box">
-            <h1 id="tap-logo" onclick="handleTaps()">NOVA<span style="color:var(--accent)">.</span></h1>
-            <p style="color:var(--dim); font-size:9px; letter-spacing:4px; font-weight:800; margin-top:10px;">WORLDWIDE ASSET MANAGEMENT</p>
+    <div id="auth-screen" style="min-height:90vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px;">
+        <div style="text-align:center; margin-bottom:30px;">
+            <h1 id="tap-logo" onclick="handleTaps()" style="font-size:4rem; margin:0; letter-spacing:-4px;">NOVA<span style="color:var(--accent)">.</span></h1>
+            <p style="color:var(--dim); font-size:10px; letter-spacing:4px;">INSTITUTIONAL ACCESS</p>
         </div>
-        <div class="glass">
-            <input type="text" id="u-id" placeholder="Identity Name">
-            <input type="password" id="u-pass" placeholder="Security Passkey">
-            <input type="text" id="secret-key" style="display:none; border:1px solid var(--gold);" placeholder="Master Admin Key">
-            <button class="btn-prime" onclick="processLogin()">Secure Access</button>
+        <div class="glass" style="width:100%; max-width:400px;">
+            <div id="auth-box">
+                <input type="text" id="u-id" placeholder="User Identity">
+                <input type="password" id="u-pass" placeholder="Master Passkey">
+                <input type="text" id="secret-admin" style="display:none; border:1px solid var(--gold);" placeholder="Admin Master Key">
+                <button class="btn-prime" onclick="processAuth()">Enter Protocol</button>
+                <p style="text-align:center; font-size:12px; color:var(--dim); margin-top:15px;">New Identity? <span style="color:var(--accent)" onclick="alert('Just enter new ID/Pass to Register!')">Create Here</span></p>
+            </div>
         </div>
-        <p style="color:var(--dim); font-size:9px; margin-top:30px;"><i class="fa-solid fa-lock"></i> AES-256 BIT ENCRYPTED TERMINAL</p>
     </div>
 
-    <div id="admin-panel">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <h2 style="color:var(--gold); margin:0;"><i class="fa-solid fa-crown"></i> MASTER CONTROL</h2>
-            <button onclick="location.reload()" style="background:var(--danger); border:none; padding:10px 20px; border-radius:10px; color:white; font-weight:800;">EXIT</button>
-        </div>
-        <div id="admin-tx-list"></div>
+    <div id="admin-panel" style="display:none; position:fixed; inset:0; background:#000; z-index:9999; padding:20px; overflow-y:auto;">
+        <h2 style="color:var(--gold);"><i class="fa-solid fa-crown"></i> ADMIN CONTROL</h2>
+        <button onclick="location.reload()" style="background:var(--danger); border:none; padding:10px; color:white; border-radius:10px;">EXIT</button>
+        <div id="admin-tx-list" style="margin-top:20px;"></div>
     </div>
 
     <div id="app-main" style="display:none;">
         <header style="padding:20px; display:flex; justify-content:space-between; align-items:center;">
-            <div style="display:flex; align-items:center; gap:12px;">
-                <div style="background:var(--accent); width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#000; font-weight:900;">N</div>
-                <div style="font-size:12px;"><span id="u-name">...</span><br><span style="color:var(--accent); font-size:9px; font-weight:900;">VERIFIED ELITE</span></div>
+            <div style="display:flex; align-items:center; gap:10px;">
+                <div style="background:var(--accent); width:35px; height:35px; border-radius:10px; color:#000; display:flex; align-items:center; justify-content:center; font-weight:900;">N</div>
+                <div style="font-size:12px;"><span id="disp-u">...</span><br><small style="color:var(--accent); font-weight:900;">ELITE ACCOUNT</small></div>
             </div>
-            <i class="fa-solid fa-power-off" onclick="logout()" style="color:var(--danger);"></i>
+            <i class="fa-solid fa-headset" onclick="nav('support')" style="color:var(--dim);"></i>
         </header>
 
         <div id="home" class="screen active-screen">
-            <div class="mining-hero">
-                <button class="reward-btn" onclick="claimDaily()"><i class="fa-solid fa-gift"></i> BONUS</button>
-                <small style="font-weight:900; opacity:0.9;">INSTITUTIONAL BALANCE</small>
+            <div style="background: linear-gradient(135deg, #00ff88, #008f4c); border-radius:40px; padding:30px; margin:15px; color:#000;">
+                <p style="font-weight:900; opacity:0.8; margin:0;">TOTAL CAPITAL ASSETS</p>
                 <h1 id="mainBal" style="font-size:3.5rem; margin:10px 0; letter-spacing:-3px;">$0.00</h1>
-                <div class="m-bar-bg"><div id="p-bar" class="m-bar-fill"></div></div>
-                <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:900;">
-                    <span>DAILY: <b id="d-prof">+$0.00</b></span>
-                    <span>TOTAL: <b id="t-prof">$0.00</b></span>
+                <div style="background:rgba(0,0,0,0.1); height:8px; border-radius:10px; overflow:hidden;">
+                    <div id="p-bar" style="height:100%; width:0%; background:#fff; transition:0.1s linear;"></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-top:15px; font-size:11px; font-weight:900;">
+                    <span>DAILY PROFIT: <b id="d-prof">+$0.00</b></span>
+                    <span>TOTAL PROFIT: <b id="t-prof">$0.00</b></span>
                 </div>
             </div>
-            <div id="node-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:15px;"></div>
+
+            <div id="nodes-container" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:15px;">
+                </div>
         </div>
 
         <div id="vault" class="screen">
-            <div class="glass" style="margin:15px auto;">
-                <h3 style="margin:0 0 15px 0;">Deposit Assets</h3>
-                <p style="font-size:10px; color:var(--accent);">USDT Wallet (TRC20):<br><b>0xc270914e5a9e72C5994fb4bd9BbdD9A3425303f2</b></p>
+            <div class="glass" style="margin:15px;">
+                <h3>DEPOSIT ASSETS</h3>
+                <p style="font-size:10px; color:var(--accent);">USDT(TRC20): 0xc270914e5a9e72C5994fb4bd9BbdD9A3425303f2</p>
                 <input type="number" id="depAmt" placeholder="Amount ($)">
                 <input type="text" id="tid" placeholder="Transaction Hash">
-                <button class="btn-prime" onclick="submitDep()">Submit to Admin</button>
+                <button class="btn-prime" onclick="submitDeposit()">Submit Deposit</button>
             </div>
         </div>
 
         <div id="support" class="screen">
-            <div class="glass" style="margin:15px auto; text-align:center;">
-                <i class="fa-solid fa-headset" style="font-size:3rem; color:var(--accent); margin-bottom:15px;"></i>
+            <div class="glass" style="margin:15px; text-align:center;">
+                <i class="fa-solid fa-circle-question" style="font-size:3rem; color:var(--accent);"></i>
                 <h2>Support Portal</h2>
-                <p style="color:var(--dim); font-size:12px;">Contact global agents 24/7.</p>
-                <button class="btn-prime" style="background:#0088cc; color:#fff; margin-top:10px;" onclick="window.open('https://t.me/your_telegram')">Telegram Support</button>
+                <button class="btn-prime" style="background:#0088cc; color:#fff; margin-top:20px;" onclick="window.open('https://t.me/your_telegram')">Telegram Live</button>
             </div>
         </div>
     </div>
 
     <nav class="bottom-nav" id="nav-bar" style="display:none;">
-        <div class="nav-item active" onclick="nav('home', this)"><i class="fa-solid fa-house-user"></i><br>HOME</div>
-        <div class="nav-item" onclick="nav('vault', this)"><i class="fa-solid fa-vault"></i><br>VAULT</div>
-        <div class="nav-item" onclick="nav('support', this)"><i class="fa-solid fa-headset"></i><br>SUPPORT</div>
+        <div class="nav-item active" onclick="nav('home', this)"><i class="fa-solid fa-chart-pie" style="font-size:1.3rem;"></i><br>DASHBOARD</div>
+        <div class="nav-item" onclick="nav('vault', this)"><i class="fa-solid fa-vault" style="font-size:1.3rem;"></i><br>VAULT</div>
+        <div class="nav-item" onclick="nav('support', this)"><i class="fa-solid fa-headset" style="font-size:1.3rem;"></i><br>SUPPORT</div>
     </nav>
 
     <script type="module">
@@ -127,54 +120,82 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let user = null; let bal = 0; let taps = 0;
+        let user = null; let taps = 0;
 
-        // Secret Admin Access
+        // Base64 Placeholder (Yahan aap apni real Base64 image strings daal sakti hain)
+        const nodeImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJb9qxAAAAA1BMVEWAgICQpREbAAAAR0lEQVR4nO3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgB8M4AAHL750VAAAAAElFTkSuQmCC";
+
         window.handleTaps = () => {
-            taps++; if(taps >= 5) { document.getElementById('secret-key').style.display = 'block'; document.getElementById('tap-logo').style.color = 'var(--gold)'; }
+            taps++; if(taps >= 5) { document.getElementById('secret-admin').style.display='block'; document.getElementById('tap-logo').style.color='var(--gold)'; }
         };
 
-        window.processLogin = async () => {
+        window.processAuth = async () => {
             const u = document.getElementById('u-id').value.toLowerCase().trim();
             const p = document.getElementById('u-pass').value;
-            const sk = document.getElementById('secret-key').value;
+            const sk = document.getElementById('secret-admin').value;
 
-            if(sk === "nov786") { document.getElementById('admin-panel').style.display = 'block'; loadAdmin(); return; }
-            if(!u || !p) return alert("Credentials Missing");
+            if(sk === "nov786") { document.getElementById('admin-panel').style.display='block'; loadAdmin(); return; }
+            if(!u || !p) return alert("Fill all fields");
 
             const ref = doc(db, "users", u);
             const snap = await getDoc(ref);
-            if(snap.exists()){
-                if(snap.data().password === p) { sessionStorage.setItem("nova_user", u); boot(); }
-                else alert("Invalid Passkey");
+            if(snap.exists()) {
+                if(snap.data().password === p) { loginSuccess(u); }
+                else alert("Wrong Passkey");
             } else {
-                await setDoc(ref, { password: p, balance: 0, daily: 0, total: 0, lastReward: 0 });
-                sessionStorage.setItem("nova_user", u); boot();
+                await setDoc(ref, { password: p, balance: 0, daily: 0, total: 0 });
+                loginSuccess(u);
             }
         };
 
-        function boot() {
-            user = sessionStorage.getItem("nova_user");
+        function loginSuccess(u) {
+            sessionStorage.setItem("nova_u", u);
+            user = u;
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('app-main').style.display = 'block';
             document.getElementById('nav-bar').style.display = 'flex';
-            document.getElementById('u-name').innerText = user.toUpperCase();
-
-            onSnapshot(doc(db, "users", user), (d) => {
-                const data = d.data(); bal = data.balance;
-                document.getElementById('mainBal').innerText = "$" + bal.toLocaleString();
+            document.getElementById('disp-u').innerText = u.toUpperCase();
+            
+            onSnapshot(doc(db, "users", u), (d) => {
+                const data = d.data();
+                document.getElementById('mainBal').innerText = "$" + data.balance.toLocaleString();
                 document.getElementById('d-prof').innerText = "+$" + (data.daily || 0);
                 document.getElementById('t-prof').innerText = "$" + (data.total || 0);
             });
-            renderNodes(); startMiningEffect();
+            renderNodes();
+            startBar();
         }
 
-        window.claimDaily = async () => {
-            const ref = doc(db, "users", user); const snap = await getDoc(ref);
-            const now = Date.now();
-            if(now - (snap.data().lastReward || 0) < 86400000) return alert("Already claimed today!");
-            await updateDoc(ref, { balance: bal + 0.50, lastReward: now });
-            alert("Daily Bonus $0.50 added!");
+        function renderNodes() {
+            const container = document.getElementById('nodes-container');
+            container.innerHTML = "";
+            const nodes = [
+                {p:30, d:1.2}, {p:50, d:2.5}, {p:100, d:5}, {p:200, d:10}, {p:500, d:25},
+                {p:800, d:45}, {p:1000, d:60}, {p:1500, d:90}, {p:2000, d:130}, {p:3000, d:210},
+                {p:5000, d:400}, {p:7000, d:580}, {p:10000, d:900}, {p:12000, d:1100}, {p:15000, d:1450},
+                {p:18000, d:1800}, {p:20000, d:2100}, {p:25000, d:2700}, {p:30000, d:3500}, {p:50000, d:6000}
+            ];
+
+            nodes.forEach((n, i) => {
+                container.innerHTML += `
+                    <div class="node-card">
+                        <div class="timer-badge">30d 00h 00m</div>
+                        <img src="${nodeImg}" class="node-img">
+                        <div style="font-weight:900; font-size:13px;">NODE SERIES V.${i+1}</div>
+                        <div style="font-size:18px; font-weight:800; color:var(--accent);">$${n.p.toLocaleString()}</div>
+                        <div class="profit-line"><span>Daily:</span> <b>$${n.d}</b></div>
+                        <div class="profit-line"><span>Term:</span> <b>30 Days</b></div>
+                        <button class="btn-prime" style="padding:10px; font-size:10px; margin-top:10px;">Activate Node</button>
+                    </div>`;
+            });
+        }
+
+        window.submitDeposit = async () => {
+            const amt = document.getElementById('depAmt').value;
+            const t = document.getElementById('tid').value;
+            if(!amt || !t) return alert("Missing Info");
+            await addDoc(collection(db, "pending_tx"), { user, amount: parseFloat(amt), tid: t, status: "Pending", time: Date.now() });
+            alert("Sent to Admin!");
         };
 
         function loadAdmin() {
@@ -182,9 +203,9 @@
                 const list = document.getElementById('admin-tx-list'); list.innerHTML = "";
                 snap.forEach(d => {
                     const tx = d.data(); if(tx.status === "Pending") {
-                        list.innerHTML += `<div class="adm-card">
-                            <p><b>ENTITY:</b> ${tx.user} | <b>VALUE:</b> $${tx.amount}</p>
-                            <button onclick="approveDep('${d.id}','${tx.user}',${tx.amount})" style="background:var(--accent); border:none; padding:10px; width:100%; border-radius:10px; font-weight:900;">APPROVE ASSETS</button>
+                        list.innerHTML += `<div class="glass" style="margin-bottom:10px; border-left:4px solid var(--accent);">
+                            <p>${tx.user} | $${tx.amount} | ID: ${tx.tid}</p>
+                            <button onclick="approveDep('${d.id}','${tx.user}',${tx.amount})" style="background:var(--accent); border:none; padding:10px; width:100%; border-radius:10px; font-weight:800;">APPROVE</button>
                         </div>`;
                     }
                 });
@@ -192,42 +213,23 @@
         }
 
         window.approveDep = async (id, u, amt) => {
-            const uRef = doc(db, "users", u); const uSnap = await getDoc(uRef);
-            await updateDoc(uRef, { balance: (uSnap.data().balance || 0) + amt });
+            const ref = doc(db, "users", u); const s = await getDoc(ref);
+            await updateDoc(ref, { balance: (s.data().balance || 0) + amt });
             await updateDoc(doc(db, "pending_tx", id), { status: "Approved" });
-            alert("Verified for " + u);
-        };
-
-        function renderNodes() {
-            const container = document.getElementById('node-grid'); container.innerHTML = "";
-            const prices = [30, 100, 500, 1000, 5000, 10000, 20000, 30000];
-            prices.forEach((p, i) => {
-                container.innerHTML += `<div style="background:var(--card); border:1px solid #333; padding:20px; border-radius:30px; text-align:center;">
-                    <small style="color:var(--accent); font-weight:900;">NODE V.${i+1}</small>
-                    <h2 style="margin:5px 0;">$${p.toLocaleString()}</h2>
-                    <button style="background:rgba(0,255,136,0.1); color:var(--accent); border:none; padding:10px; width:100%; border-radius:12px; font-weight:900; font-size:10px;">ACTIVATE</button>
-                </div>`;
-            });
-        }
-
-        window.submitDep = async () => {
-            const amt = document.getElementById('depAmt').value;
-            const t = document.getElementById('tid').value;
-            if(!amt || !t) return alert("Enter all details");
-            await addDoc(collection(db, "pending_tx"), { user, amount: parseFloat(amt), tid: t, status: "Pending", time: Date.now() });
-            alert("Assets sent for verification!");
+            alert("Done!");
         };
 
         window.nav = (id, el) => {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
             document.getElementById(id).classList.add('active-screen');
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
+            if(el) {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                el.classList.add('active');
+            }
         };
 
-        window.logout = () => { sessionStorage.clear(); location.reload(); };
-        function startMiningEffect() { let p = 0; setInterval(() => { p = (p + 0.4) % 100; document.getElementById('p-bar').style.width = p + "%"; }, 100); }
-        if(sessionStorage.getItem("nova_user")) boot();
+        function startBar() { let p=0; setInterval(() => { p=(p+0.5)%100; document.getElementById('p-bar').style.width=p+"%"; }, 100); }
+        if(sessionStorage.getItem("nova_u")) loginSuccess(sessionStorage.getItem("nova_u"));
     </script>
 </body>
 </html>
