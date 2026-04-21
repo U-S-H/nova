@@ -7,213 +7,227 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root { --bg: #010409; --card: #0d1117; --accent: #00ff88; --text: #f0f6fc; --dim: #8b949e; --gold: #f2cc60; --danger: #ff4d4d; }
-        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; padding-bottom: 100px; }
         
-        /* 1. Elite Login Experience */
-        #auth-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(circle at top right, #0a2e1f, #010409); }
-        .trusted-badge { font-size: 10px; color: var(--accent); border: 1px solid var(--accent); padding: 4px 12px; border-radius: 50px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; background: rgba(0,255,136,0.05); }
-        .welcome-msg { text-align: center; margin-bottom: 30px; }
-        .welcome-msg h1 { font-size: 3.5rem; margin: 0; letter-spacing: -3px; cursor: pointer; user-select: none; }
+        /* Global Ticker */
+        #global-ticker { background: #161b22; color: var(--accent); padding: 10px; font-size: 10px; font-weight: 800; white-space: nowrap; overflow: hidden; border-bottom: 1px solid #30363d; }
+        .ticker-wrap { display: inline-block; animation: drift 30s linear infinite; }
+        @keyframes drift { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* Login System */
+        #auth-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 25px; background: radial-gradient(circle at top, #0a2e1f, #010409); }
+        .logo-box h1 { font-size: 4rem; margin: 0; letter-spacing: -4px; cursor: pointer; user-select: none; transition: 0.3s; }
+        .glass { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 40px; padding: 35px; width: 100%; max-width: 400px; box-shadow: 0 25px 60px rgba(0,0,0,0.6); }
+        input { width: 100%; padding: 18px; background: #161b22; border: 1px solid #30363d; color: #fff; border-radius: 22px; margin-bottom: 15px; outline: none; }
+        .btn-prime { width: 100%; padding: 20px; background: var(--accent); color: #000; border: none; border-radius: 22px; font-weight: 900; cursor: pointer; text-transform: uppercase; box-shadow: 0 10px 20px rgba(0,255,136,0.2); }
+
+        /* Hero & Dashboard */
+        .mining-hero { background: linear-gradient(135deg, #00ff88, #008f4c); border-radius: 40px; padding: 30px; margin: 15px; color: #000; position: relative; overflow: hidden; }
+        .reward-btn { position: absolute; top: 15px; right: 15px; background: #000; color: #fff; border: none; padding: 8px 12px; border-radius: 50px; font-size: 10px; font-weight: 900; cursor: pointer; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
         
-        /* Hidden Admin Field */
-        #secret-key-field { display: none; margin-bottom: 15px; border-color: var(--gold); }
+        .m-bar-bg { background: rgba(0,0,0,0.1); height: 8px; border-radius: 10px; overflow: hidden; margin: 15px 0; }
+        .m-bar-fill { height: 100%; width: 0%; background: #fff; box-shadow: 0 0 15px #fff; }
 
-        .glass { background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 35px; padding: 30px; width: 100%; max-width: 420px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        input { width: 100%; padding: 18px; background: #161b22; border: 1px solid #30363d; color: #fff; border-radius: 20px; margin-bottom: 15px; outline: none; font-size: 15px; transition: 0.3s; }
-        input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0,255,136,0.1); }
-        .btn-prime { width: 100%; padding: 18px; background: var(--accent); color: #000; border: none; border-radius: 20px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+        /* Admin UI */
+        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; padding: 20px; overflow-y: auto; }
+        .adm-card { background: #161b22; border-left: 4px solid var(--accent); padding: 15px; border-radius: 15px; margin-bottom: 15px; }
 
-        /* 2. Professional Dashboard */
-        .app-header { padding: 15px 25px; background: rgba(1,4,9,0.9); backdrop-filter: blur(15px); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #30363d; position: sticky; top: 0; z-index: 100; }
-        .status-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); display: inline-block; margin-right: 5px; }
-
-        /* 3. Unlimited Features Styling */
-        .feature-chip { display: inline-block; background: #161b22; padding: 6px 12px; border-radius: 10px; font-size: 10px; margin: 4px; color: var(--dim); border: 1px solid #30363d; }
-        .mining-card { background: linear-gradient(135deg, #00ff88, #008f4c); border-radius: 35px; padding: 25px; margin: 15px; color: #000; }
-        
-        /* 4. Secret Admin Panel UI */
-        #admin-panel { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; overflow-y: auto; padding: 20px; }
-        .adm-row { background: #161b22; padding: 15px; border-radius: 20px; margin-bottom: 12px; border: 1px solid #30363d; }
-
-        /* Navigation */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #0d1117; display: flex; justify-content: space-around; padding: 20px 0; border-top: 1px solid #30363d; }
-        .nav-link { color: var(--dim); font-size: 12px; text-align: center; }
-        .nav-link.active { color: var(--accent); }
+        /* Nav & Screens */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: rgba(13, 17, 23, 0.98); display: flex; justify-content: space-around; padding: 20px 0; border-top: 1px solid #30363d; z-index: 1000; }
+        .nav-item { color: var(--dim); font-size: 10px; text-align: center; font-weight: 800; }
+        .nav-item.active { color: var(--accent); }
+        .screen { display: none; padding-top: 10px; }
+        .active-screen { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="auth-screen">
-        <div class="trusted-badge"><i class="fa-solid fa-shield-check"></i> Certified Global Provider</div>
-        <div class="welcome-msg">
-            <h1 id="logo-trigger" onclick="handleTap()">NOVA<span style="color:var(--accent)">.</span></h1>
-            <p style="color:var(--dim); font-size: 11px; letter-spacing: 2px;">WELCOME TO THE FUTURE OF CAPITAL</p>
-        </div>
+    <div id="global-ticker">
+        <div class="ticker-wrap">🌐 NOVA OMNI: MARKET STATUS OPTIMAL • BTC $64,210 • TOTAL ASSETS $14,502,192 • LIVE PAYOUTS ACTIVE • 🌐</div>
+    </div>
 
-        <div class="glass">
-            <div id="login-fields">
-                <input type="text" id="username" placeholder="Asset Management ID">
-                <input type="password" id="password" placeholder="Secure Passkey">
-                <input type="text" id="secret-key-field" placeholder="System Master Key">
-                
-                <button class="btn-prime" onclick="processLogin()">Initialize Access</button>
-                <div style="margin-top:25px; text-align:center; font-size:12px; color:var(--dim);">
-                    <i class="fa-solid fa-lock"></i> 256-bit AES Secure Terminal
-                </div>
-            </div>
+    <div id="auth-screen">
+        <div class="logo-box">
+            <h1 id="tap-logo" onclick="handleTaps()">NOVA<span style="color:var(--accent)">.</span></h1>
+            <p style="color:var(--dim); font-size:9px; letter-spacing:4px; font-weight:800; margin-top:10px;">WORLDWIDE ASSET MANAGEMENT</p>
         </div>
-        <p style="color:var(--dim); font-size:10px; margin-top:40px;">© 2026 NOVA OMNI HOLDINGS LLC. ALL RIGHTS RESERVED.</p>
+        <div class="glass">
+            <input type="text" id="u-id" placeholder="Identity Name">
+            <input type="password" id="u-pass" placeholder="Security Passkey">
+            <input type="text" id="secret-key" style="display:none; border:1px solid var(--gold);" placeholder="Master Admin Key">
+            <button class="btn-prime" onclick="processLogin()">Secure Access</button>
+        </div>
+        <p style="color:var(--dim); font-size:9px; margin-top:30px;"><i class="fa-solid fa-lock"></i> AES-256 BIT ENCRYPTED TERMINAL</p>
     </div>
 
     <div id="admin-panel">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <h2 style="color:var(--gold); margin:0;"><i class="fa-solid fa-gears"></i> SYSTEM MASTER</h2>
+            <h2 style="color:var(--gold); margin:0;"><i class="fa-solid fa-crown"></i> MASTER CONTROL</h2>
             <button onclick="location.reload()" style="background:var(--danger); border:none; padding:10px 20px; border-radius:10px; color:white; font-weight:800;">EXIT</button>
         </div>
-        <div id="adm-list"></div>
+        <div id="admin-tx-list"></div>
     </div>
 
     <div id="app-main" style="display:none;">
-        <header class="app-header">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <div style="background:var(--accent); width:35px; height:35px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#000; font-weight:900;">N</div>
-                <div style="font-size:13px;"><span id="userDisp">...</span><br><small style="color:var(--accent); font-weight:800;">INSTITUTIONAL</small></div>
+        <header style="padding:20px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <div style="background:var(--accent); width:38px; height:38px; border-radius:12px; display:flex; align-items:center; justify-content:center; color:#000; font-weight:900;">N</div>
+                <div style="font-size:12px;"><span id="u-name">...</span><br><span style="color:var(--accent); font-size:9px; font-weight:900;">VERIFIED ELITE</span></div>
             </div>
-            <div style="font-size:12px; color:var(--dim);"><span class="status-dot"></span> SECURE</div>
+            <i class="fa-solid fa-power-off" onclick="logout()" style="color:var(--danger);"></i>
         </header>
 
-        <div class="mining-card">
-            <p style="font-weight:800; opacity:0.8; margin:0;">GLOBAL PORTFOLIO VALUE</p>
-            <h1 id="mainBal" style="font-size:3.5rem; margin:10px 0; letter-spacing:-2px;">$0.00</h1>
-            <div style="background:rgba(0,0,0,0.2); height:6px; border-radius:10px; overflow:hidden;">
-                <div id="mBar" style="height:100%; width:0%; background:#fff; transition:0.1s linear;"></div>
+        <div id="home" class="screen active-screen">
+            <div class="mining-hero">
+                <button class="reward-btn" onclick="claimDaily()"><i class="fa-solid fa-gift"></i> BONUS</button>
+                <small style="font-weight:900; opacity:0.9;">INSTITUTIONAL BALANCE</small>
+                <h1 id="mainBal" style="font-size:3.5rem; margin:10px 0; letter-spacing:-3px;">$0.00</h1>
+                <div class="m-bar-bg"><div id="p-bar" class="m-bar-fill"></div></div>
+                <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:900;">
+                    <span>DAILY: <b id="d-prof">+$0.00</b></span>
+                    <span>TOTAL: <b id="t-prof">$0.00</b></span>
+                </div>
             </div>
-            <div style="display:flex; justify-content:space-between; margin-top:15px; font-size:11px;">
-                <span>ACTIVE NODES: <b>14</b></span>
-                <span>SYSTEM APY: <b>12.5%</b></span>
+            <div id="node-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:15px;"></div>
+        </div>
+
+        <div id="vault" class="screen">
+            <div class="glass" style="margin:15px auto;">
+                <h3 style="margin:0 0 15px 0;">Deposit Assets</h3>
+                <p style="font-size:10px; color:var(--accent);">USDT Wallet (TRC20):<br><b>0xc270914e5a9e72C5994fb4bd9BbdD9A3425303f2</b></p>
+                <input type="number" id="depAmt" placeholder="Amount ($)">
+                <input type="text" id="tid" placeholder="Transaction Hash">
+                <button class="btn-prime" onclick="submitDep()">Submit to Admin</button>
             </div>
         </div>
 
-        <div style="padding:0 15px;">
-            <span class="feature-chip">Auto-Harvesting</span>
-            <span class="feature-chip">Instant Extraction</span>
-            <span class="feature-chip">VIP Insurance</span>
-            <span class="feature-chip">24/7 Desk</span>
+        <div id="support" class="screen">
+            <div class="glass" style="margin:15px auto; text-align:center;">
+                <i class="fa-solid fa-headset" style="font-size:3rem; color:var(--accent); margin-bottom:15px;"></i>
+                <h2>Support Portal</h2>
+                <p style="color:var(--dim); font-size:12px;">Contact global agents 24/7.</p>
+                <button class="btn-prime" style="background:#0088cc; color:#fff; margin-top:10px;" onclick="window.open('https://t.me/your_telegram')">Telegram Support</button>
+            </div>
         </div>
-
-        <div id="nodeGrid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:15px;"></div>
     </div>
 
     <nav class="bottom-nav" id="nav-bar" style="display:none;">
-        <div class="nav-link active"><i class="fa-solid fa-house-user" style="font-size:1.5rem"></i><br>Dashboard</div>
-        <div class="nav-link"><i class="fa-solid fa-chart-line" style="font-size:1.5rem"></i><br>Market</div>
-        <div class="nav-link"><i class="fa-solid fa-wallet" style="font-size:1.5rem"></i><br>Vault</div>
-        <div class="nav-link"><i class="fa-solid fa-headset" style="font-size:1.5rem"></i><br>Support</div>
+        <div class="nav-item active" onclick="nav('home', this)"><i class="fa-solid fa-house-user"></i><br>HOME</div>
+        <div class="nav-item" onclick="nav('vault', this)"><i class="fa-solid fa-vault"></i><br>VAULT</div>
+        <div class="nav-item" onclick="nav('support', this)"><i class="fa-solid fa-headset"></i><br>SUPPORT</div>
     </nav>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, updateDoc, addDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyAXlQ1tKTJbcnIXNeww9I3d-ukzD7_mUCo",
-            authDomain: "home-94d45.firebaseapp.com",
-            projectId: "home-94d45",
-            appId: "1:964390949419:web:589840cb91b7e42ecd506e"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyAXlQ1tKTJbcnIXNeww9I3d-ukzD7_mUCo", authDomain: "home-94d45.firebaseapp.com", projectId: "home-94d45", appId: "1:964390949419:web:589840cb91b7e42ecd506e" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let tapCount = 0; let user = null; let bal = 0;
+        let user = null; let bal = 0; let taps = 0;
 
-        // 1. Tap Tap Secret Logic
-        window.handleTap = () => {
-            tapCount++;
-            if(tapCount >= 5) {
-                document.getElementById('secret-key-field').style.display = 'block';
-                document.getElementById('logo-trigger').style.color = '#f2cc60';
-            }
+        // Secret Admin Access
+        window.handleTaps = () => {
+            taps++; if(taps >= 5) { document.getElementById('secret-key').style.display = 'block'; document.getElementById('tap-logo').style.color = 'var(--gold)'; }
         };
 
-        // 2. Login Logic
         window.processLogin = async () => {
-            const u = document.getElementById('username').value.toLowerCase().trim();
-            const p = document.getElementById('password').value;
-            const sk = document.getElementById('secret-key-field').value;
+            const u = document.getElementById('u-id').value.toLowerCase().trim();
+            const p = document.getElementById('u-pass').value;
+            const sk = document.getElementById('secret-key').value;
 
-            // ADMIN ACCESS
-            if(sk === "nov786") {
-                document.getElementById('admin-panel').style.display = 'block';
-                loadAdminPanel();
-                return;
-            }
+            if(sk === "nov786") { document.getElementById('admin-panel').style.display = 'block'; loadAdmin(); return; }
+            if(!u || !p) return alert("Credentials Missing");
 
-            if(!u || !p) return alert("System Identity Required.");
-            
             const ref = doc(db, "users", u);
             const snap = await getDoc(ref);
-            if(snap.exists()) {
-                if(snap.data().password === p) { sessionStorage.setItem("nova_u", u); startApp(); }
-                else alert("Access Denied: Invalid Key.");
+            if(snap.exists()){
+                if(snap.data().password === p) { sessionStorage.setItem("nova_user", u); boot(); }
+                else alert("Invalid Passkey");
             } else {
-                await setDoc(ref, { password: p, balance: 0 });
-                sessionStorage.setItem("nova_u", u); startApp();
+                await setDoc(ref, { password: p, balance: 0, daily: 0, total: 0, lastReward: 0 });
+                sessionStorage.setItem("nova_user", u); boot();
             }
         };
 
-        function startApp() {
-            user = sessionStorage.getItem("nova_u");
+        function boot() {
+            user = sessionStorage.getItem("nova_user");
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('app-main').style.display = 'block';
             document.getElementById('nav-bar').style.display = 'flex';
-            document.getElementById('userDisp').innerText = user.toUpperCase();
-            
-            onSnapshot(doc(db, "users", user), (d) => {
-                bal = d.data().balance;
-                document.getElementById('mainBal').innerText = "$" + bal.toLocaleString();
-            });
+            document.getElementById('u-name').innerText = user.toUpperCase();
 
-            renderNodes();
-            let p = 0; setInterval(() => { p = (p + 0.5) % 100; document.getElementById('mBar').style.width = p + "%"; }, 100);
+            onSnapshot(doc(db, "users", user), (d) => {
+                const data = d.data(); bal = data.balance;
+                document.getElementById('mainBal').innerText = "$" + bal.toLocaleString();
+                document.getElementById('d-prof').innerText = "+$" + (data.daily || 0);
+                document.getElementById('t-prof').innerText = "$" + (data.total || 0);
+            });
+            renderNodes(); startMiningEffect();
         }
 
-        // 3. Unlimited Admin Control
-        function loadAdminPanel() {
+        window.claimDaily = async () => {
+            const ref = doc(db, "users", user); const snap = await getDoc(ref);
+            const now = Date.now();
+            if(now - (snap.data().lastReward || 0) < 86400000) return alert("Already claimed today!");
+            await updateDoc(ref, { balance: bal + 0.50, lastReward: now });
+            alert("Daily Bonus $0.50 added!");
+        };
+
+        function loadAdmin() {
             onSnapshot(collection(db, "pending_tx"), (snap) => {
-                const list = document.getElementById('adm-list'); list.innerHTML = "";
+                const list = document.getElementById('admin-tx-list'); list.innerHTML = "";
                 snap.forEach(d => {
-                    const tx = d.data();
-                    if(tx.status === "Pending") {
-                        list.innerHTML += `<div class="adm-row">
+                    const tx = d.data(); if(tx.status === "Pending") {
+                        list.innerHTML += `<div class="adm-card">
                             <p><b>ENTITY:</b> ${tx.user} | <b>VALUE:</b> $${tx.amount}</p>
-                            <button onclick="approveTx('${d.id}','${tx.user}',${tx.amount})" style="background:var(--accent); border:none; padding:10px; width:100%; border-radius:10px; font-weight:800;">CONFIRM ASSETS</button>
+                            <button onclick="approveDep('${d.id}','${tx.user}',${tx.amount})" style="background:var(--accent); border:none; padding:10px; width:100%; border-radius:10px; font-weight:900;">APPROVE ASSETS</button>
                         </div>`;
                     }
                 });
             });
         }
 
-        window.approveTx = async (id, u, amt) => {
-            const uRef = doc(db, "users", u);
-            const uSnap = await getDoc(uRef);
+        window.approveDep = async (id, u, amt) => {
+            const uRef = doc(db, "users", u); const uSnap = await getDoc(uRef);
             await updateDoc(uRef, { balance: (uSnap.data().balance || 0) + amt });
             await updateDoc(doc(db, "pending_tx", id), { status: "Approved" });
-            alert("Master Protocol: Assets Verified.");
+            alert("Verified for " + u);
         };
 
         function renderNodes() {
-            const grid = document.getElementById('nodeGrid'); grid.innerHTML = "";
+            const container = document.getElementById('node-grid'); container.innerHTML = "";
             const prices = [30, 100, 500, 1000, 5000, 10000, 20000, 30000];
             prices.forEach((p, i) => {
-                grid.innerHTML += `<div style="background:var(--card); border:1px solid #30363d; padding:20px; border-radius:25px; text-align:center;">
-                    <div style="font-size:9px; color:var(--accent); font-weight:800; margin-bottom:5px;">SERIES V.${i+1}</div>
-                    <h2 style="margin:0">$${p.toLocaleString()}</h2>
-                    <button style="background:rgba(0,255,136,0.1); color:var(--accent); border:none; padding:8px 15px; border-radius:10px; font-size:10px; font-weight:900; margin-top:10px;">DEPLOY NODE</button>
+                container.innerHTML += `<div style="background:var(--card); border:1px solid #333; padding:20px; border-radius:30px; text-align:center;">
+                    <small style="color:var(--accent); font-weight:900;">NODE V.${i+1}</small>
+                    <h2 style="margin:5px 0;">$${p.toLocaleString()}</h2>
+                    <button style="background:rgba(0,255,136,0.1); color:var(--accent); border:none; padding:10px; width:100%; border-radius:12px; font-weight:900; font-size:10px;">ACTIVATE</button>
                 </div>`;
             });
         }
 
-        if(sessionStorage.getItem("nova_u")) startApp();
+        window.submitDep = async () => {
+            const amt = document.getElementById('depAmt').value;
+            const t = document.getElementById('tid').value;
+            if(!amt || !t) return alert("Enter all details");
+            await addDoc(collection(db, "pending_tx"), { user, amount: parseFloat(amt), tid: t, status: "Pending", time: Date.now() });
+            alert("Assets sent for verification!");
+        };
+
+        window.nav = (id, el) => {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
+            document.getElementById(id).classList.add('active-screen');
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            el.classList.add('active');
+        };
+
+        window.logout = () => { sessionStorage.clear(); location.reload(); };
+        function startMiningEffect() { let p = 0; setInterval(() => { p = (p + 0.4) % 100; document.getElementById('p-bar').style.width = p + "%"; }, 100); }
+        if(sessionStorage.getItem("nova_user")) boot();
     </script>
 </body>
 </html>
