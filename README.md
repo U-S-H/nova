@@ -2,69 +2,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVA | Public Node Terminal</title>
+    <title>NOVA | Global Institutional Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #0A192F; --accent: #64FFDA; --card-bg: #112240; --text-main: #CCD6F6; --text-dim: #8892B0; }
-        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--primary); color: var(--text-main); }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--primary); color: var(--text-main); overflow-x: hidden; }
         .ticker { background: #020c1b; color: var(--accent); padding: 8px; font-size: 11px; border-bottom: 1px solid #112240; }
         
-        /* Auth Styles */
-        #auth-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: #020c1b; }
+        /* Auth Page */
+        #auth-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: radial-gradient(circle, #0a192f 0%, #020c1b 100%); }
         .auth-card { background: var(--card-bg); padding: 40px; border-radius: 12px; width: 100%; max-width: 380px; border-top: 4px solid var(--accent); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         
-        /* Dashboard Styles */
-        #dashboard { display: none; padding: 40px; max-width: 1000px; margin: auto; }
+        /* Dashboard */
+        #dashboard { display: none; padding: 30px; max-width: 1100px; margin: auto; animation: fadeIn 0.8s; }
         .node-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin: 20px 0; }
         .node-item { background: #112240; padding: 10px; border-radius: 6px; font-size: 11px; display: flex; justify-content: space-between; border: 1px solid #233554; }
-        
-        input { width: 100%; padding: 12px; background: #0A192F; border: 1px solid #233554; color: white; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; }
-        .btn-prime { width: 100%; padding: 14px; background: var(--accent); color: var(--primary); border: none; border-radius: 4px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-        .toggle-link { color: var(--accent); font-size: 12px; cursor: pointer; text-decoration: underline; margin-top: 15px; display: block; text-align: center; }
-        
         .status-on { color: var(--accent); font-weight: bold; }
-        footer { text-align: center; padding: 20px; color: var(--text-dim); font-size: 11px; }
+
+        input, select { width: 100%; padding: 12px; background: #0A192F; border: 1px solid #233554; color: white; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; }
+        .btn-prime { width: 100%; padding: 14px; background: var(--accent); color: var(--primary); border: none; border-radius: 4px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .btn-prime:hover { opacity: 0.8; transform: translateY(-2px); }
+        .toggle-link { color: var(--accent); font-size: 12px; cursor: pointer; text-decoration: underline; margin-top: 15px; display: block; text-align: center; }
+
+        footer { text-align: center; padding: 40px; color: var(--text-dim); font-size: 11px; cursor: default; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div class="ticker">
-        <marquee>GLOBAL NETWORK: ACTIVE | PUBLIC REGISTRATION: OPEN | SECURE ASSET TERMINAL 2026</marquee>
+        <marquee>GLOBAL STATUS: ACTIVE | 15 SECURE NODES ONLINE | REGISTERED USERS ONLY | ENCRYPTION: AES-256</marquee>
     </div>
 
     <div id="auth-page">
         <div class="auth-card">
-            <h2 id="auth-title" style="text-align: center; letter-spacing: 2px;">LOGIN</h2>
-            <input type="text" id="username" placeholder="Choose Username">
-            <input type="password" id="password" placeholder="Choose Password">
-            <button class="btn-prime" id="auth-btn" onclick="handleAuth()">Access Terminal</button>
-            <span class="toggle-link" id="toggle-text" onclick="toggleMode()">Don't have an account? Sign Up</span>
+            <h2 id="auth-title" style="text-align: center; letter-spacing: 2px; color: var(--accent);">TERMINAL LOGIN</h2>
+            <input type="text" id="username" placeholder="Username / Identification">
+            <input type="password" id="password" placeholder="Access Key">
+            <button class="btn-prime" id="auth-btn" onclick="handleAuth()">Authorize Access</button>
+            <span class="toggle-link" id="toggle-text" onclick="toggleMode()">New User? Create Institutional Account</span>
         </div>
-        <footer>&copy; NOVA GLOBAL INFRASTRUCTURE</footer>
+        <footer>&copy; 2026 NOVA CAPITAL GLOBAL. ALL RIGHTS RESERVED.</footer>
     </div>
 
     <div id="dashboard">
-        <h1 style="color: var(--accent);">WELCOME TO NOVA</h1>
-        <p id="welcome-msg" style="color: var(--text-dim);"></p>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1 style="color: var(--accent); margin: 0;">NOVA TERMINAL</h1>
+            <button onclick="logout()" style="background: none; border: 1px solid gray; color: gray; padding: 5px 10px; cursor: pointer; border-radius: 4px;">Logout</button>
+        </div>
+        <p id="welcome-msg" style="color: var(--text-dim); border-bottom: 1px solid #233554; padding-bottom: 10px;"></p>
         
+        <h3>Live Global Node Infrastructure (15 Active)</h3>
         <div class="node-grid" id="nodeContainer"></div>
 
-        <div style="background: #112240; padding: 30px; border-radius: 12px; border: 1px solid var(--accent); margin-top: 30px;">
-            <h3>Institutional Funding Gateway</h3>
-            <p style="font-size: 13px;">Deposit USDT to activate your assigned global node.</p>
-            <div onclick="copyWallet()" style="background: #020c1b; padding: 15px; border-radius: 5px; font-family: monospace; color: var(--accent); cursor: pointer; border: 1px dashed #444; margin-bottom: 20px;">
+        <div style="background: #112240; padding: 30px; border-radius: 12px; border: 1px solid var(--accent); margin-top: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+            <h3 style="margin-top: 0;">Institutional Funding Gateway</h3>
+            <p style="font-size: 13px; color: var(--text-dim);">Transfer USDT/TRX to the secure address below. Node activation requires proof of transaction.</p>
+            
+            <div onclick="copyWallet()" style="background: #020c1b; padding: 15px; border-radius: 5px; font-family: monospace; color: var(--accent); cursor: pointer; border: 1px dashed var(--accent); text-align: center; font-size: 14px; margin-bottom: 20px;">
                 0xc270914e5a9e72C5994fb4bd9BbdD9A3425303f2
             </div>
-            <input type="text" id="txid" placeholder="Enter Transaction Hash (TXID)">
-            <button class="btn-prime" onclick="submitDeposit()">Confirm Deposit</button>
+
+            <label style="font-size: 11px; color: var(--accent);">SELECT NETWORK</label>
+            <select id="pay-method">
+                <option value="USDT-BEP20">USDT (Binance Smart Chain)</option>
+                <option value="USDT-ERC20">USDT (Ethereum Mainnet)</option>
+                <option value="TRX-TRC20">TRON (TRC20 Network)</option>
+            </select>
+
+            <label style="font-size: 11px; color: var(--accent);">TRANSACTION ID (TID)</label>
+            <input type="text" id="txid" placeholder="Paste TXID / Hash here">
+
+            <label style="font-size: 11px; color: var(--accent);">UPLOAD PROOF (SCREENSHOT)</label>
+            <input type="file" id="proofImage" accept="image/*" style="padding: 8px;">
+
+            <button class="btn-prime" id="submitBtn" onclick="submitDeposit()">Submit Proof & Activate Node</button>
         </div>
         
-        <p onclick="logout()" style="text-align:center; color:gray; cursor:pointer; margin-top:20px;">Logout</p>
+        <footer id="secret-trigger">
+            System Monitoring Active. Access Logs Encrypted.
+        </footer>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAXlQ1tKTJbcnIXNeww9I3d-ukzD7_mUCo",
@@ -80,60 +102,100 @@
 
         window.toggleMode = function() {
             isLoginMode = !isLoginMode;
-            document.getElementById('auth-title').innerText = isLoginMode ? "LOGIN" : "SIGN UP";
-            document.getElementById('auth-btn').innerText = isLoginMode ? "Access Terminal" : "Create Account";
-            document.getElementById('toggle-text').innerText = isLoginMode ? "Don't have an account? Sign Up" : "Already have an account? Login";
+            document.getElementById('auth-title').innerText = isLoginMode ? "TERMINAL LOGIN" : "CREATE ACCOUNT";
+            document.getElementById('auth-btn').innerText = isLoginMode ? "Authorize Access" : "Register Node";
+            document.getElementById('toggle-text').innerText = isLoginMode ? "New User? Create Institutional Account" : "Already registered? Switch to Login";
         };
 
         window.handleAuth = async function() {
             const u = document.getElementById('username').value.toLowerCase().trim();
             const p = document.getElementById('password').value;
-
-            if(!u || !p) return alert("Please fill all fields, sweetie.");
+            if(!u || !p) return alert("All fields are required, sweetie.");
 
             if(isLoginMode) {
-                const userRef = doc(db, "users", u);
-                const userSnap = await getDoc(userRef);
+                const userSnap = await getDoc(doc(db, "users", u));
                 if(userSnap.exists() && userSnap.data().password === p) {
-                    sessionStorage.setItem("user", u);
+                    sessionStorage.setItem("nova_user", u);
                     showDashboard();
-                } else { alert("Invalid credentials, sweetie."); }
+                } else { alert("Access Denied: Invalid identification."); }
             } else {
-                await setDoc(doc(db, "users", u), { password: p, joined: new Date().toISOString() });
-                alert("Account created successfully! Now you can login.");
+                await setDoc(doc(db, "users", u), { password: p, date: new Date().toISOString() });
+                alert("Account secured successfully! You can now login.");
                 toggleMode();
             }
         };
 
         window.submitDeposit = async function() {
             const tx = document.getElementById('txid').value;
-            const user = sessionStorage.getItem("user");
-            if(tx.length < 10) return alert("Invalid TXID");
-            
-            await setDoc(doc(db, "deposits", "tx_" + Date.now()), { user: user, txid: tx, status: "Pending" });
-            alert("Deposit submitted! Our nodes are verifying your transaction, sweetie.");
+            const method = document.getElementById('pay-method').value;
+            const fileInput = document.getElementById('proofImage');
+            const btn = document.getElementById('submitBtn');
+
+            if(!tx || fileInput.files.length === 0) return alert("Please provide TID and Screenshot proof, sweetie.");
+
+            btn.innerText = "Processing...";
+            btn.disabled = true;
+
+            const reader = new FileReader();
+            reader.onloadend = async function() {
+                try {
+                    await setDoc(doc(db, "deposits", "tx_" + Date.now()), {
+                        user: sessionStorage.getItem("nova_user"),
+                        tid: tx,
+                        method: method,
+                        proof: reader.result,
+                        status: "Pending",
+                        date: new Date().toLocaleString()
+                    });
+                    alert("Submission received! Verification node is processing your request.");
+                    location.reload();
+                } catch(e) { alert("Error: " + e.message); btn.disabled = false; }
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        };
+
+        // SECRET ADMIN (5 Clicks on Footer)
+        let adminClicks = 0;
+        document.getElementById('secret-trigger').onclick = async function() {
+            adminClicks++;
+            if(adminClicks === 5) {
+                const key = prompt("Enter Master Administrative Key:");
+                if(key === "nova_boss_786") {
+                    const snap = await getDocs(collection(db, "deposits"));
+                    let html = `<div style="background:#020c1b; color:white; padding:20px; min-height:100vh; font-family:sans-serif;">
+                                <h2 style="color:#64FFDA;">ADMIN AUDIT LOG</h2>
+                                <button onclick="location.reload()">Back</button><br><br>
+                                <table border="1" style="width:100%; border-collapse:collapse; text-align:left;">
+                                <tr style="background:#112240;"><th>User</th><th>Method</th><th>TID</th><th>Proof</th></tr>`;
+                    snap.forEach(d => {
+                        const data = d.data();
+                        html += `<tr><td>${data.user}</td><td>${data.method}</td><td>${data.tid}</td>
+                                 <td><img src="${data.proof}" width="100" onclick="window.open(this.src)" style="cursor:pointer"></td></tr>`;
+                    });
+                    document.body.innerHTML = html + `</table></div>`;
+                }
+                adminClicks = 0;
+            }
         };
 
         function showDashboard() {
             document.getElementById('auth-page').style.display = 'none';
             document.getElementById('dashboard').style.display = 'block';
-            document.getElementById('welcome-msg').innerText = "Logged in as: " + sessionStorage.getItem("user");
+            document.getElementById('welcome-msg').innerText = "System Identity: " + sessionStorage.getItem("nova_user");
             loadNodes();
         }
 
         function loadNodes() {
             const container = document.getElementById('nodeContainer');
-            const nodes = ["NV-Alpha", "NV-Beta", "NV-Gamma", "NV-Delta", "NV-Epsilon", "V-Layer-1", "V-Layer-2"];
+            const nodes = ["NV-Alpha (London)", "NV-Beta (Tokyo)", "NV-Gamma (NY)", "NV-Delta (SG)", "NV-Epsilon (FR)", "NV-Zeta (SYD)", "NV-Eta (DXB)", "NV-Theta (PAR)", "NV-Iota (HK)", "NV-Kappa (ZRH)", "V-Layer-1", "V-Layer-2", "V-Layer-3", "V-Layer-4", "V-Layer-5"];
             container.innerHTML = "";
-            nodes.forEach(n => {
-                container.innerHTML += `<div class="node-item"><span>${n}</span><span class="status-on">ACTIVE</span></div>`;
-            });
+            nodes.forEach(n => { container.innerHTML += `<div class="node-item"><span>${n}</span><span class="status-on">ONLINE</span></div>`; });
         }
 
         window.copyWallet = () => { navigator.clipboard.writeText("0xc270914e5a9e72C5994fb4bd9BbdD9A3425303f2"); alert("Address Copied!"); };
         window.logout = () => { sessionStorage.clear(); location.reload(); };
 
-        if(sessionStorage.getItem("user")) showDashboard();
+        if(sessionStorage.getItem("nova_user")) showDashboard();
     </script>
 </body>
 </html>
