@@ -2,105 +2,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVA | Institutional Global Infrastructure</title>
+    <title>NOVA | Enterprise Asset Protocol</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #0A192F; --accent: #64FFDA; --card-bg: #112240; --text-main: #CCD6F6; --text-dim: #8892B0; }
+        :root { --primary: #0A192F; --accent: #64FFDA; --card-bg: #112240; --text-main: #CCD6F6; --text-dim: #8892B0; --gold: #FFD700; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--primary); color: var(--text-main); line-height: 1.6; }
         
-        body { 
-            margin: 0; font-family: 'Inter', sans-serif; 
-            background: var(--primary); 
-            color: var(--text-main); 
-            background-image: linear-gradient(rgba(10, 25, 47, 0.9), rgba(10, 25, 47, 0.9)), 
-                              url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=2000');
-            background-size: cover;
-            background-attachment: fixed;
-        }
-
-        .ticker { background: rgba(2, 12, 27, 0.9); color: var(--accent); padding: 8px; font-size: 11px; border-bottom: 1px solid #112240; backdrop-filter: blur(10px); }
+        /* Glassmorphism UI */
+        .glass { background: rgba(17, 34, 64, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(100, 255, 218, 0.1); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+        .ticker { background: #020c1b; color: var(--accent); padding: 8px; font-size: 11px; text-align: center; border-bottom: 1px solid #112240; }
         
-        /* Auth Page */
-        #auth-page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
-        .auth-card { background: rgba(17, 34, 64, 0.95); padding: 40px; border-radius: 12px; width: 100%; max-width: 380px; border-top: 4px solid var(--accent); backdrop-filter: blur(15px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        /* Dashboard Grid */
+        #dashboard { display: none; padding: 20px; max-width: 1200px; margin: auto; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { text-align: center; padding: 15px; border-top: 3px solid var(--accent); }
+        .stat-card h2 { margin: 5px 0; color: var(--accent); }
+
+        /* Node System */
+        .node-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .node-card { background: var(--card-bg); border-radius: 12px; overflow: hidden; position: relative; transition: 0.3s; }
+        .node-card:hover { transform: translateY(-5px); border: 1px solid var(--accent); }
+        .node-img { width: 100%; height: 150px; object-fit: cover; opacity: 0.7; }
+        .node-info { padding: 15px; }
+        .timer { font-family: monospace; color: var(--gold); font-size: 14px; }
+
+        /* Tabs & Inputs */
+        .btn-prime { width: 100%; padding: 12px; background: var(--accent); color: var(--primary); border: none; border-radius: 5px; font-weight: 800; cursor: pointer; margin-top: 10px; }
+        input, select { width: 100%; padding: 12px; background: #020c1b; border: 1px solid #233554; color: white; border-radius: 5px; margin: 10px 0; }
+
+        /* Legal & Info */
+        .info-section { font-size: 13px; color: var(--text-dim); margin-top: 50px; border-top: 1px solid #233554; padding-top: 20px; }
         
-        /* Dashboard */
-        #dashboard { display: none; padding: 30px; max-width: 1100px; margin: auto; animation: fadeIn 0.8s; }
-        .node-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin: 20px 0; }
-        .node-item { background: rgba(17, 34, 64, 0.8); padding: 10px; border-radius: 6px; font-size: 11px; display: flex; justify-content: space-between; border: 1px solid #233554; }
-        
-        /* New Features Layout */
-        .feature-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
-        .glass-box { background: rgba(17, 34, 64, 0.8); padding: 20px; border-radius: 12px; border: 1px solid rgba(100, 255, 218, 0.1); }
-
-        input, select { width: 100%; padding: 12px; background: #0A192F; border: 1px solid #233554; color: white; border-radius: 4px; margin-bottom: 15px; }
-        .btn-prime { width: 100%; padding: 14px; background: var(--accent); color: var(--primary); border: none; border-radius: 4px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .btn-prime:hover { filter: brightness(1.2); transform: translateY(-2px); }
-
-        /* Activity Log */
-        #log-container { font-family: monospace; font-size: 10px; color: #64FFDA; height: 100px; overflow-y: hidden; }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @media (max-width: 800px) { .feature-row { grid-template-columns: 1fr; } }
+        #auth-page { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: url('https://images.unsplash.com/photo-1639322537228-f710d846310a?auto=format&fit=crop&q=80&w=2000') no-repeat center center fixed; background-size: cover; }
     </style>
 </head>
 <body>
 
-    <div class="ticker">
-        <marquee>GLOBAL STATUS: ACTIVE | NODES: 15/15 | SECURE ASSET TERMINAL | ENCRYPTION: AES-256-GCM</marquee>
-    </div>
+    <div class="ticker"><marquee>SYSTEM STATUS: OPERATIONAL | REWARD POOL: 1,500,000 USDT | SECURE GLOBAL NODES: 15 ACTIVE</marquee></div>
 
     <div id="auth-page">
-        <div class="auth-card">
-            <h2 id="auth-title" style="text-align: center; letter-spacing: 2px;">TERMINAL LOGIN</h2>
-            <input type="text" id="username" placeholder="Identification">
+        <div class="glass" style="max-width: 380px; width: 90%;">
+            <h2 style="text-align:center; color:var(--accent);">NOVA TERMINAL</h2>
+            <input type="text" id="username" placeholder="Username">
             <input type="password" id="password" placeholder="Access Key">
-            <button class="btn-prime" id="auth-btn" onclick="handleAuth()">Enter Terminal</button>
-            <p style="font-size:11px; text-align:center; color:var(--text-dim); cursor:pointer;" onclick="toggleMode()" id="toggle-text">New User? Register Node</p>
+            <button class="btn-prime" onclick="handleAuth()">Enter Terminal</button>
+            <p style="text-align:center; font-size:12px; cursor:pointer;" onclick="toggleMode()">New? Register Account</p>
         </div>
     </div>
 
     <div id="dashboard">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2 style="color:var(--accent);">NOVA OPERATIONAL INTERFACE</h2>
-            <button onclick="logout()" style="background:none; border:1px solid #444; color:gray; cursor:pointer; padding:5px;">Logout</button>
+            <h1 style="color:var(--accent);">NOVA DASHBOARD</h1>
+            <button onclick="logout()">Logout</button>
         </div>
 
-        <div class="feature-row">
-            <div class="glass-box">
-                <h4 style="margin-top:0; color:var(--accent);">Yield Calculator</h4>
-                <p style="font-size:11px; color:var(--text-dim);">Estimate your institutional returns (Monthly 15%)</p>
-                <input type="number" id="calc-amount" placeholder="Enter USDT Amount" oninput="calculate()">
-                <div style="font-size:13px;">Estimated Monthly: <span id="yield-result" style="color:var(--accent); font-weight:bold;">0.00</span> USDT</div>
-            </div>
-            <div class="glass-box">
-                <h4 style="margin-top:0; color:var(--accent);">Network Activity Logs</h4>
-                <div id="log-container"></div>
+        <div class="stats-grid">
+            <div class="glass stat-card"><h3>$0.00</h3><p>Total Profit</p></div>
+            <div class="glass stat-card"><h3>$0.00</h3><p>Daily Yield</p></div>
+            <div class="glass stat-card"><h3>$0.00</h3><p>Withdrawals</p></div>
+            <div class="glass stat-card"><h3>0.00</h3><p>Ref. Rewards</p></div>
+        </div>
+
+        <div class="glass">
+            <h4>My Referral Link</h4>
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="refLink" readonly>
+                <button class="btn-prime" style="width:100px; margin:10px 0;" onclick="copyRef()">Copy</button>
             </div>
         </div>
 
-        <h3>Infrastructure Nodes</h3>
-        <div class="node-grid" id="nodeContainer"></div>
-
-        <div class="glass-box" style="border: 1px solid var(--accent);">
-            <h3 style="margin-top:0;">Institutional Funding Gateway</h3>
-            <p style="font-size:12px; color:var(--text-dim);">Transfer assets to the master wallet and upload proof for activation.</p>
-            <div onclick="copyWallet()" style="background:#020c1b; padding:15px; border-radius:5px; text-align:center; color:var(--accent); font-family:monospace; border:1px dashed var(--accent); cursor:pointer; margin-bottom:20px;">
-                0xc270914e5a9e72C5994fb4bd9BbdD9A3425303f2
+        <h2>Active Infrastructure Nodes</h2>
+        <div class="node-container">
+            <div class="node-card">
+                <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800" class="node-img">
+                <div class="node-info">
+                    <h4>Alpha-Cloud Node</h4>
+                    <p>Cost: <span style="color:var(--accent);">100 USDT</span></p>
+                    <p>Daily Profit: 1.5%</p>
+                    <div class="timer">Ends in: 29d 23h 59m</div>
+                    <button class="btn-prime" onclick="openDeposit('Alpha', 100)">Buy Node</button>
+                </div>
             </div>
-            
-            <select id="pay-method">
-                <option value="USDT-BEP20">USDT (Binance Smart Chain)</option>
-                <option value="USDT-ERC20">USDT (Ethereum Mainnet)</option>
-                <option value="TRX-TRC20">TRON (TRC20)</option>
-            </select>
-            <input type="text" id="txid" placeholder="Transaction Hash (TID)">
-            <input type="file" id="proofImage" accept="image/*">
-            <button class="btn-prime" id="submitBtn" onclick="submitDeposit()">Submit Activation Request</button>
+            <div class="node-card">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800" class="node-img">
+                <div class="node-info">
+                    <h4>Omega-Quantum Node</h4>
+                    <p>Cost: <span style="color:var(--accent);">500 USDT</span></p>
+                    <p>Daily Profit: 2.2%</p>
+                    <div class="timer">Ends in: 44d 23h 59m</div>
+                    <button class="btn-prime" onclick="openDeposit('Omega', 500)">Buy Node</button>
+                </div>
+            </div>
         </div>
 
-        <footer id="secret-trigger" style="margin-top:40px; font-size:10px; color:gray; text-align:center;">
-            &copy; 2026 NOVA CAPITAL GLOBAL | 5-S ENCRYPTION ACTIVE
-        </footer>
+        <div class="glass" style="margin-top:30px;">
+            <h3>Transaction History</h3>
+            <div id="history-log" style="font-size:12px; color:var(--text-dim);">No transactions found yet.</div>
+        </div>
+
+        <div class="info-section">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
+                <div>
+                    <h4>Company Details</h4>
+                    <p>NOVA Capital Ltd. is a registered asset management protocol specialized in high-frequency liquidity provision. Headquartered in Singapore.</p>
+                </div>
+                <div>
+                    <h4>FAQ</h4>
+                    <details><summary>Minimum Withdrawal?</summary><p>Minimum withdrawal is 10 USDT.</p></details>
+                    <details><summary>Activation Time?</summary><p>Nodes are activated after 3 blockchain confirmations.</p></details>
+                </div>
+            </div>
+            <p style="margin-top:20px; font-size:10px;">Privacy Policy | Terms of Service | Anti-Money Laundering Compliance</p>
+        </div>
+        
+        <footer id="secret-trigger" style="text-align:center; padding:20px; font-size:10px;">&copy; 2026 NOVA CAPITAL GLOBAL</footer>
+    </div>
+
+    <div id="deposit-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); align-items:center; justify-content:center; z-index:100;">
+        <div class="glass" style="width:90%; max-width:400px;">
+            <h3 id="dep-title">Activate Node</h3>
+            <p>Send Amount: <span id="dep-amt" style="color:var(--accent);"></span> USDT</p>
+            <div style="background:#020c1b; padding:10px; border-radius:5px; font-family:monospace; color:var(--accent); font-size:12px;" onclick="copyWallet()">0xc270914e5a9e72C5994fb4bd9BbdD9A3425303f2</div>
+            <input type="text" id="txid" placeholder="Paste TID/Hash">
+            <input type="file" id="proofImg" accept="image/*">
+            <button class="btn-prime" onclick="submitFinal()">Confirm Activation</button>
+            <button style="background:none; border:none; color:gray; width:100%; margin-top:10px; cursor:pointer;" onclick="closeModal()">Cancel</button>
+        </div>
     </div>
 
     <script type="module">
@@ -116,100 +143,66 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let isLoginMode = true;
-
-        window.toggleMode = () => {
-            isLoginMode = !isLoginMode;
-            document.getElementById('auth-title').innerText = isLoginMode ? "TERMINAL LOGIN" : "NODE REGISTRATION";
-            document.getElementById('auth-btn').innerText = isLoginMode ? "Enter Terminal" : "Register Now";
-            document.getElementById('toggle-text').innerText = isLoginMode ? "New User? Register Node" : "Back to Login";
-        };
-
+        // --- AUTH LOGIC ---
         window.handleAuth = async () => {
             const u = document.getElementById('username').value.toLowerCase().trim();
             const p = document.getElementById('password').value;
             if(!u || !p) return alert("All fields required, sweetie.");
-
-            if(isLoginMode) {
-                const snap = await getDoc(doc(db, "users", u));
-                if(snap.exists() && snap.data().password === p) {
-                    sessionStorage.setItem("nova_user", u);
+            
+            const snap = await getDoc(doc(db, "users", u));
+            if(snap.exists()) {
+                if(snap.data().password === p) {
+                    sessionStorage.setItem("user", u);
                     location.reload();
-                } else { alert("Access Denied."); }
+                } else { alert("Wrong key, sweetie."); }
             } else {
-                await setDoc(doc(db, "users", u), { password: p, date: new Date().toISOString() });
-                alert("Account secured! Login now.");
-                toggleMode();
+                await setDoc(doc(db, "users", u), { password: p, balance: 0, ref: u + "_nova" });
+                alert("Welcome to NOVA! Account registered.");
+                location.reload();
             }
         };
 
-        window.calculate = () => {
-            const amt = document.getElementById('calc-amount').value;
-            document.getElementById('yield-result').innerText = (amt * 0.15).toFixed(2);
+        // --- UI FUNCTIONS ---
+        function showDashboard() {
+            const user = sessionStorage.getItem("user");
+            document.getElementById('auth-page').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('refLink').value = window.location.origin + "/nova/?ref=" + user;
+        }
+
+        window.openDeposit = (name, amt) => {
+            document.getElementById('dep-title').innerText = "Activate " + name + " Node";
+            document.getElementById('dep-amt').innerText = amt;
+            document.getElementById('deposit-modal').style.display = 'flex';
         };
 
-        window.submitDeposit = async () => {
-            const tx = document.getElementById('txid').value;
-            const file = document.getElementById('proofImage').files[0];
-            if(!tx || !file) return alert("Fill all fields, sweetie.");
+        window.closeModal = () => document.getElementById('deposit-modal').style.display = 'none';
+
+        window.submitFinal = async () => {
+            const tid = document.getElementById('txid').value;
+            const file = document.getElementById('proofImg').files[0];
+            if(!tid || !file) return alert("Fill all details, sweetie.");
             
             const reader = new FileReader();
             reader.onloadend = async () => {
                 await setDoc(doc(db, "deposits", "tx_" + Date.now()), {
-                    user: sessionStorage.getItem("nova_user"),
-                    tid: tx,
+                    user: sessionStorage.getItem("user"),
+                    tid: tid,
                     proof: reader.result,
-                    method: document.getElementById('pay-method').value,
-                    date: new Date().toLocaleString()
+                    status: "Pending",
+                    node: document.getElementById('dep-title').innerText
                 });
-                alert("Proof Uploaded Successfully!");
+                alert("Activation request sent! Checking blockchain...");
                 location.reload();
             };
             reader.readAsDataURL(file);
         };
 
-        function addLog() {
-            const logs = ["Node NV-Alpha synced.", "Incoming request from Singapore...", "Security handshake successful.", "Block #8821 verified.", "Encrypted session active."];
-            const logBox = document.getElementById('log-container');
-            const p = document.createElement('div');
-            p.innerText = `> ${logs[Math.floor(Math.random()*logs.length)]}`;
-            logBox.prepend(p);
-            if(logBox.childNodes.length > 5) logBox.lastChild.remove();
-        }
-
-        function showDashboard() {
-            document.getElementById('auth-page').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-            setInterval(addLog, 3000);
-            const nodes = ["NV-London", "NV-Tokyo", "NV-NY", "NV-SG", "NV-FRA", "NV-SYD", "NV-DXB", "NV-PAR", "NV-HK", "NV-ZRH", "V1-Core", "V2-Core", "V3-Core", "V4-Core", "V5-Core"];
-            nodes.forEach(n => {
-                document.getElementById('nodeContainer').innerHTML += `<div class="node-item"><span>${n}</span><span class="status-on">ONLINE</span></div>`;
-            });
-        }
-
-        // SECRET ADMIN
-        let adminClicks = 0;
-        document.getElementById('secret-trigger').onclick = async () => {
-            adminClicks++;
-            if(adminClicks === 5) {
-                const k = prompt("Master Key:");
-                if(k === "nova_boss_786") {
-                    const snap = await getDocs(collection(db, "deposits"));
-                    let h = `<div style="background:#020c1b; color:white; padding:20px; font-size:12px;"><button onclick="location.reload()">Exit</button><h3>Admin Panel</h3><table border="1" style="width:100%; border-collapse:collapse;"><tr><th>User</th><th>TID</th><th>Proof</th></tr>`;
-                    snap.forEach(d => {
-                        const data = d.data();
-                        h += `<tr><td>${data.user}</td><td>${data.tid}</td><td><img src="${data.proof}" width="100" onclick="window.open(this.src)"></td></tr>`;
-                    });
-                    document.body.innerHTML = h + `</table></div>`;
-                }
-                adminClicks = 0;
-            }
-        };
-
-        window.copyWallet = () => { navigator.clipboard.writeText("0xc270914e5a9e72C5994fb4bd9BbdD9A3425303f2"); alert("Copied!"); };
+        window.copyWallet = () => { navigator.clipboard.writeText("0xc270914e5a9e72C5994fb4bd9BbdD9A3425303f2"); alert("Address Copied!"); };
+        window.copyRef = () => { navigator.clipboard.writeText(document.getElementById('refLink').value); alert("Referral Link Copied!"); };
         window.logout = () => { sessionStorage.clear(); location.reload(); };
 
-        if(sessionStorage.getItem("nova_user")) showDashboard();
+        if(sessionStorage.getItem("user")) showDashboard();
     </script>
 </body>
 </html>
