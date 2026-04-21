@@ -1,239 +1,322 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NOVA TITAN | Institutional Terminal</title>
+    <title>NOVA | Institutional Asset Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #020202; --card: #0d0d0d; --accent: #00ff88; --gold: #f2cc60; --text: #ffffff; --dim: #8b949e; --danger: #ff4d4d; }
-        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; padding-bottom: 100px; }
+        :root { --gold: #D4AF37; --accent: #00FFA3; --bg: #050505; --card: #111111; --text: #FFFFFF; }
+        body { margin: 0; font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
         
-        /* Layout */
-        .glass { background: var(--card); border: 1px solid #222; border-radius: 30px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
-        input { width: 100%; padding: 18px; background: #161b22; border: 1px solid #30363d; color: #fff; border-radius: 20px; margin-bottom: 12px; outline: none; box-sizing: border-box; }
-        .btn-prime { width: 100%; padding: 18px; background: var(--accent); color: #000; border: none; border-radius: 20px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
-        .btn-prime:active { transform: scale(0.95); }
-
-        /* Nodes Grid */
-        .node-card { background: var(--card); border: 1px solid #222; border-radius: 25px; padding: 15px; position: relative; }
-        .node-img { width: 100%; height: 120px; border-radius: 20px; object-fit: cover; opacity: 0.7; background: #161b22; }
-        .timer-badge { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: var(--gold); padding: 5px 12px; border-radius: 50px; font-size: 10px; font-weight: 800; border: 1px solid var(--gold); }
-
-        /* Payout Toast */
-        #payout-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #111; border: 1px solid var(--accent); padding: 12px 25px; border-radius: 50px; font-size: 10px; z-index: 9999; display: none; box-shadow: 0 0 30px rgba(0,255,136,0.2); }
+        /* Corporate UI Elements */
+        .glass { background: rgba(20,20,20,0.9); border: 1px solid rgba(212,175,55,0.2); border-radius: 30px; padding: 25px; backdrop-filter: blur(20px); }
+        .btn-nova { background: linear-gradient(135deg, var(--gold), #F2CC60); color: #000; border: none; padding: 20px; border-radius: 18px; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; width: 100%; transition: 0.4s; }
+        .input-nova { width: 100%; padding: 18px; background: #000; border: 1px solid #333; color: #fff; border-radius: 15px; margin-bottom: 15px; outline: none; font-family: 'Montserrat'; }
+        
+        /* Dashboard Stats */
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .stat-box { background: var(--card); padding: 15px; border-radius: 20px; border-left: 4px solid var(--gold); }
+        
+        /* Node Cards */
+        .node-card { background: var(--card); border: 1px solid #222; border-radius: 25px; padding: 15px; position: relative; margin-bottom: 15px; transition: 0.3s; }
+        .node-img { width: 100%; height: 140px; border-radius: 20px; object-fit: cover; background: #1a1a1a; }
+        .countdown { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.8); color: var(--accent); padding: 5px 12px; border-radius: 50px; font-size: 10px; font-weight: 800; border: 1px solid var(--accent); }
 
         /* Navigation */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: rgba(2,2,2,0.95); display: flex; justify-content: space-around; padding: 20px 0; border-top: 1px solid #222; z-index: 2000; backdrop-filter: blur(10px); }
-        .nav-item { color: var(--dim); text-align: center; font-size: 10px; font-weight: 800; }
-        .nav-item.active { color: var(--accent); }
-        .screen { display: none; padding: 20px; }
-        .active-screen { display: block; animation: fadeInUp 0.4s ease; }
-        @keyframes fadeInUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: rgba(0,0,0,0.95); display: flex; justify-content: space-around; padding: 20px 0; border-top: 1px solid #222; z-index: 5000; }
+        .nav-item { color: #666; text-align: center; font-size: 9px; font-weight: 700; text-decoration: none; }
+        .nav-item.active { color: var(--gold); }
 
-        #admin-panel { display: none; position: fixed; inset: 0; background: #000; z-index: 10000; padding: 25px; overflow-y: auto; }
+        .screen { display: none; padding: 20px; padding-bottom: 120px; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Image Preview Box */
+        #preview-box { width: 100%; height: 150px; border: 2px dashed #444; border-radius: 15px; margin-top: 10px; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; }
     </style>
 </head>
 <body>
 
-    <div id="payout-toast"></div>
-
-    <div id="auth-screen" style="height:90vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px;">
-        <h1 id="logo" onclick="adminTap()" style="font-size:4.5rem; margin:0; letter-spacing:-5px;">NOVA<span style="color:var(--accent)">.</span></h1>
-        <p style="color:var(--dim); font-size:10px; letter-spacing:6px; margin-bottom:40px;">QUANTUM ASSET MANAGEMENT</p>
+    <div id="auth-screen" style="height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:30px;">
+        <div style="text-align:center; margin-bottom:40px;">
+            <h1 style="font-size:3.5rem; margin:0; letter-spacing:-4px; font-weight:900;">NOVA<span style="color:var(--gold)">.</span></h1>
+            <p style="color:var(--gold); font-size:9px; letter-spacing:6px; opacity:0.8;">WORLDWIDE ASSET TERMINAL</p>
+        </div>
         <div class="glass" style="width:100%; max-width:400px;">
-            <input type="text" id="u-id" placeholder="User Identifier">
-            <input type="password" id="u-pass" placeholder="Security Passkey">
-            <input type="text" id="adm-key" style="display:none; border-color:var(--gold);" placeholder="Enter Master Key">
-            <button class="btn-prime" onclick="processAuth()">Access Terminal</button>
+            <div id="auth-toggle" style="display:flex; margin-bottom:20px; gap:10px;">
+                <button onclick="toggleAuth('login')" id="btn-login" style="flex:1; background:var(--gold); color:#000; border:none; padding:10px; border-radius:10px; font-weight:900;">LOGIN</button>
+                <button onclick="toggleAuth('signup')" id="btn-signup" style="flex:1; background:#222; color:#fff; border:none; padding:10px; border-radius:10px; font-weight:900;">SIGNUP</button>
+            </div>
+            <input type="text" id="u-id" placeholder="Account Identifier / Email" class="input-nova">
+            <input type="password" id="u-pass" placeholder="Security Passkey" class="input-nova">
+            <div id="signup-fields" style="display:none;">
+                <input type="text" id="u-phone" placeholder="Phone Number (WhatsApp)" class="input-nova">
+                <input type="text" id="u-ref" placeholder="Referral ID (Optional)" class="input-nova">
+            </div>
+            <button class="btn-nova" onclick="handleAuth()">Access Protocol</button>
         </div>
-    </div>
-
-    <div id="admin-panel">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2 style="color:var(--gold);">SYSTEM OVERRIDE</h2>
-            <button onclick="location.reload()" style="background:var(--danger); border:none; padding:10px 20px; border-radius:10px; color:#fff;">EXIT</button>
-        </div>
-        <div id="adm-list" style="margin-top:40px;"></div>
     </div>
 
     <div id="app-main" style="display:none;">
-        <header style="padding:20px; display:flex; justify-content:space-between; align-items:center;">
+        <header style="padding:25px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1a1a1a;">
             <div>
-                <span id="user-display" style="font-weight:900; font-size:22px;">...</span><br>
-                <small style="color:var(--accent); font-weight:800;"><i class="fa-solid fa-circle-check"></i> GLOBAL VERIFIED</small>
+                <span id="display-user" style="font-weight:900; font-size:24px;">USER</span><br>
+                <small id="bonus-status" onclick="claimDaily()" style="color:var(--accent); font-weight:800; cursor:pointer;"><i class="fa-solid fa-gift"></i> CLAIM LOGIN BONUS</small>
             </div>
-            <div style="background:var(--card); width:45px; height:45px; border-radius:15px; display:flex; align-items:center; justify-content:center; border:1px solid #333;" onclick="nav('wallet')">
-                <i class="fa-solid fa-wallet" style="color:var(--gold);"></i>
+            <div style="background:var(--card); padding:10px; border-radius:15px; border:1px solid #333;" onclick="nav('profile')">
+                <i class="fa-solid fa-user-shield" style="color:var(--gold);"></i>
             </div>
         </header>
 
-        <div id="home" class="screen active-screen">
-            <div class="glass" style="background: linear-gradient(135deg, #111, #000); margin-bottom:25px; border:1px solid #333;">
-                <p style="color:var(--dim); font-size:11px; margin:0; letter-spacing:1px;">AVAILABLE PORTFOLIO</p>
-                <h1 id="main-bal" style="font-size:3.8rem; margin:10px 0; letter-spacing:-3px;">$0.00</h1>
-                <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:800;">
-                    <span style="color:var(--accent);">YIELD: +$<span id="d-prof">0.00</span></span>
-                    <span style="color:var(--gold);">REBATE: $<span id="r-prof">0.00</span></span>
+        <div id="dash" class="screen" style="display:block;">
+            <div class="glass" style="background: linear-gradient(135deg, #111 0%, #000 100%); margin-bottom:25px;">
+                <p style="color:#666; font-size:11px; margin:0; letter-spacing:2px;">LIQUID ASSETS (USDT)</p>
+                <h1 id="bal-val" style="font-size:3.8rem; margin:15px 0; color:#fff; letter-spacing:-3px;">$0.00</h1>
+                <div class="stat-grid">
+                    <div class="stat-box"><small style="color:#666;">DAILY YIELD</small><br><b id="daily-v" style="color:var(--accent);">+$0.00</b></div>
+                    <div class="stat-box"><small style="color:#666;">TOTAL PROFIT</small><br><b id="total-v">$0.00</b></div>
                 </div>
             </div>
 
-            <div style="display:flex; justify-content:space-between; margin-bottom:20px; align-items:center;">
-                <h4 style="margin:0;">ACTIVE MINING NODES</h4>
-                <div style="font-size:10px; background:rgba(0,255,136,0.1); color:var(--accent); padding:5px 12px; border-radius:50px;">LIVE ENGINE</div>
-            </div>
-            <div id="nodes-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px;"></div>
+            <h4 style="margin-bottom:15px;">STAKING NODES</h4>
+            <div id="nodes-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;"></div>
         </div>
 
-        <div id="wallet" class="screen">
-            <div class="glass">
+        <div id="finance" class="screen">
+            <div class="glass" style="margin-bottom:20px;">
                 <div style="display:flex; gap:10px; margin-bottom:25px;">
-                    <button class="btn-prime" style="font-size:12px; padding:15px;" onclick="setMode('Deposit')">Deposit</button>
-                    <button class="btn-prime" style="font-size:12px; padding:15px; background:#222; color:#fff;" onclick="setMode('Withdraw')">Withdraw</button>
+                    <button class="btn-nova" style="padding:15px; font-size:12px;" onclick="finTab('dep')">Deposit</button>
+                    <button class="btn-nova" style="padding:15px; font-size:12px; background:#222; color:#fff;" onclick="finTab('wd')">Withdraw</button>
                 </div>
-                <div id="finance-form">
-                    <input type="number" id="f-amt" placeholder="Amount ($)">
-                    <input type="text" id="f-tx" placeholder="Hash / Wallet Address">
-                    <button class="btn-prime" onclick="submitFinance()">Submit Request</button>
+
+                <div id="dep-box">
+                    <select id="dep-method" class="input-nova">
+                        <option>Binance (USDT-BEP20)</option>
+                        <option>Trust Wallet (USDT)</option>
+                        <option>MetaMask (USDT)</option>
+                    </select>
+                    <p style="font-size:10px; color:var(--gold); text-align:center; background:rgba(0,0,0,0.5); padding:10px; border-radius:10px;">Company Address: <br><b>0x71C7656EC7ab88b098defB751B7401B5f6d8976F</b></p>
+                    <input type="number" id="dep-amt" placeholder="Amount ($)" class="input-nova">
+                    <input type="text" id="dep-tid" placeholder="Transaction ID (TID)" class="input-nova">
+                    <label style="font-size:11px; color:#888;">Upload Proof (Base64):</label>
+                    <input type="file" id="proof-img" onchange="previewProof(this)" class="input-nova" style="padding:10px;">
+                    <div id="preview-box">Preview</div>
+                    <button class="btn-nova" style="margin-top:20px;" onclick="submitDep()">Verify Assets</button>
+                </div>
+
+                <div id="wd-box" style="display:none;">
+                    <select id="wd-method" class="input-nova">
+                        <option>EasyPaisa</option>
+                        <option>PayPal</option>
+                        <option>Binance Pay ID</option>
+                        <option>Bank Transfer (Worldwide)</option>
+                    </select>
+                    <input type="number" id="wd-amt" placeholder="Withdrawal Amount" class="input-nova">
+                    <input type="text" id="wd-acc" placeholder="Account Number / Email" class="input-nova">
+                    <input type="text" id="wd-name" placeholder="Account Holder Name" class="input-nova">
+                    <button class="btn-nova" onclick="submitWd()">Request Payout</button>
                 </div>
             </div>
             
-            <h4 style="margin:30px 0 10px 0;">INVITATION SYSTEM</h4>
-            <div class="glass" style="padding:20px; font-size:12px; border:1px dashed #444;">
-                <p style="margin:0; color:var(--dim);">Your Personal Referral Link:</p>
-                <p id="ref-link" style="color:var(--accent); font-weight:800; margin-top:10px;"></p>
+            <h4>ACTIVITY LOG</h4>
+            <div id="trans-history" class="glass" style="padding:15px; font-size:11px; color:#888;">No recent activity.</div>
+        </div>
+
+        <div id="profile" class="screen">
+            <div class="glass" style="margin-bottom:20px;">
+                <h3>Company Profile</h3>
+                <p style="font-size:12px; line-height:1.6; color:#888;">NOVA is a registered global asset management firm specialized in high-frequency trading and node validation.</p>
+                <div style="border-top:1px solid #222; padding-top:15px; margin-top:15px;">
+                    <p onclick="window.open('https://t.me/NovaSupport')" style="color:var(--gold); cursor:pointer;"><i class="fa-brands fa-telegram"></i> Telegram Official</p>
+                    <p><i class="fa-solid fa-envelope"></i> support@nova-global.com</p>
+                </div>
+            </div>
+
+            <div class="glass">
+                <h3>Affiliate Center</h3>
+                <p style="font-size:11px;">Copy your referral link and earn 10% Level 1 bonus.</p>
+                <div style="background:#000; padding:15px; border-radius:12px; border:1px dashed var(--gold); word-break: break-all;">
+                    <small id="ref-link"></small>
+                </div>
             </div>
         </div>
     </div>
 
-    <nav class="bottom-nav" id="nav-bar" style="display:none;">
-        <div class="nav-item active" onclick="nav('home', this)"><i class="fa-solid fa-chart-line" style="font-size:1.5rem;"></i><br>MARKETS</div>
-        <div class="nav-item" onclick="nav('wallet', this)"><i class="fa-solid fa-vault" style="font-size:1.5rem;"></i><br>WALLET</div>
-        <div class="nav-item" onclick="window.open('https://t.me/your_telegram')"><i class="fa-solid fa-headset" style="font-size:1.5rem;"></i><br>SUPPORT</div>
+    <nav class="nav-bar" id="bottom-nav" style="display:none;">
+        <a href="#" class="nav-item active" onclick="nav('dash', this)"><i class="fa-solid fa-cube" style="font-size:1.5rem;"></i><br>MINING</a>
+        <a href="#" class="nav-item" onclick="nav('finance', this)"><i class="fa-solid fa-money-bill-transfer" style="font-size:1.5rem;"></i><br>FINANCE</a>
+        <a href="#" class="nav-item" onclick="nav('profile', this)"><i class="fa-solid fa-briefcase" style="font-size:1.5rem;"></i><br>OFFICE</a>
     </nav>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, updateDoc, addDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, addDoc, collection, onSnapshot, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+        // CONFIG (Replace with your actual Firebase details)
         const firebaseConfig = { apiKey: "AIzaSyAXlQ1tKTJbcnIXNeww9I3d-ukzD7_mUCo", authDomain: "home-94d45.firebaseapp.com", projectId: "home-94d45", appId: "1:964390949419:web:589840cb91b7e42ecd506e" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        let user = null; let taps = 0; let fMode = "Deposit";
-        const b64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAADhCAMAAAD66L79AAAAA1BMVEWAgICQpREbAAAAR0lEQVR4nO3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgB8M4AAHL750VAAAAAElFTkSuQmCC";
+        let user = null; let base64Img = ""; let authMode = "login";
 
-        window.adminTap = () => { taps++; if(taps >= 6) { document.getElementById('adm-key').style.display='block'; document.getElementById('logo').style.color='var(--gold)'; } };
+        window.toggleAuth = (m) => {
+            authMode = m;
+            document.getElementById('signup-fields').style.display = m === 'signup' ? 'block' : 'none';
+            document.getElementById('btn-login').style.background = m === 'login' ? 'var(--gold)' : '#222';
+            document.getElementById('btn-signup').style.background = m === 'signup' ? 'var(--gold)' : '#222';
+        };
 
-        window.processAuth = async () => {
-            const u = document.getElementById('u-id').value.toLowerCase().trim();
-            const p = document.getElementById('u-pass').value;
-            if(document.getElementById('adm-key').value === "nov786") { document.getElementById('admin-panel').style.display='block'; loadAdmin(); return; }
-            if(!u || !p) return alert("All fields required");
+        window.handleAuth = async () => {
+            const id = document.getElementById('u-id').value.toLowerCase().trim();
+            const pw = document.getElementById('u-pass').value;
+            if(!id || !pw) return alert("Security Violation: Missing Data");
 
-            const ref = doc(db, "users", u);
+            const ref = doc(db, "users", id);
             const snap = await getDoc(ref);
-            if(snap.exists()){
-                if(snap.data().password === p) { startApp(u); } else alert("Wrong Passkey");
+
+            if(authMode === 'login') {
+                if(snap.exists() && snap.data().password === pw) { boot(id); }
+                else alert("Access Denied: Invalid Credentials");
             } else {
-                await setDoc(ref, { password: p, balance: 0, daily: 0, rebate: 0, total: 0 });
-                startApp(u);
+                if(snap.exists()) return alert("Identity already registered");
+                await setDoc(ref, { 
+                    password: pw, balance: 0, daily: 0, total: 0, 
+                    phone: document.getElementById('u-phone').value,
+                    refBy: document.getElementById('u-ref').value,
+                    joined: Date.now(), lastBonus: 0
+                });
+                boot(id);
             }
         };
 
-        function startApp(u) {
-            user = u; sessionStorage.setItem("nova_user", u);
-            document.getElementById('auth-screen').style.display='none';
-            document.getElementById('app-main').style.display='block';
-            document.getElementById('nav-bar').style.display='flex';
-            document.getElementById('user-display').innerText = u.toUpperCase();
-            document.getElementById('ref-link').innerText = "https://u-s-h.github.io/Coin/?id=" + u;
-            
-            onSnapshot(doc(db, "users", u), (d) => {
+        function boot(id) {
+            user = id; sessionStorage.setItem("nova_token", id);
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('app-main').style.display = 'block';
+            document.getElementById('bottom-nav').style.display = 'flex';
+            document.getElementById('display-user').innerText = id.toUpperCase();
+            document.getElementById('ref-link').innerText = "https://nova.global/join?id=" + id;
+
+            onSnapshot(doc(db, "users", id), (d) => {
                 const data = d.data();
-                document.getElementById('main-bal').innerText = "$" + data.balance.toFixed(2);
-                document.getElementById('d-prof').innerText = (data.daily || 0).toFixed(2);
-                document.getElementById('r-prof').innerText = (data.rebate || 0).toFixed(2);
+                document.getElementById('bal-val').innerText = "$" + (data.balance || 0).toLocaleString(undefined, {minimumFractionDigits:2});
+                document.getElementById('daily-v').innerText = "+$" + (data.daily || 0).toFixed(2);
+                document.getElementById('total-v').innerText = "$" + (data.total || 0).toFixed(2);
             });
             renderNodes();
-            startToasts();
-            // Visual Mining Engine
-            setInterval(() => {
-                const balEl = document.getElementById('main-bal');
-                let val = parseFloat(balEl.innerText.replace('$',''));
-                balEl.innerText = "$" + (val + 0.0001).toFixed(4);
-            }, 5000);
+            loadHistory();
         }
 
         function renderNodes() {
             const grid = document.getElementById('nodes-grid'); grid.innerHTML = "";
-            const tiers = [30, 100, 300, 500, 1000, 2500, 5000, 10000, 25000, 50000];
+            const tiers = [
+                {p: 50, d: 2.5}, {p: 100, d: 5.2}, {p: 500, d: 28}, {p: 1000, d: 60},
+                {p: 2500, d: 155}, {p: 5000, d: 320}, {p: 10000, d: 700}, {p: 25000, d: 1800}
+            ];
             tiers.forEach((t, i) => {
                 grid.innerHTML += `
                     <div class="node-card">
-                        <div class="timer-badge">29:23:59:59</div>
-                        <img src="${b64}" class="node-img">
-                        <div style="font-weight:900; font-size:20px; margin-top:10px;">$${t.toLocaleString()}</div>
-                        <div style="font-size:10px; color:var(--accent);">Daily Payout: $${(t*0.05).toFixed(2)}</div>
-                        <button class="btn-prime" style="padding:10px; font-size:10px; margin-top:12px;">Stake Node</button>
+                        <div class="countdown">29d 23h 59m</div>
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOAAAADhCAMAAAD66L79AAAAA1BMVEWAgICQpREbAAAAR0lEQVR4nO3BAQEAAACAkP6v7ggKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgB8M4AAHL750VAAAAAElFTkSuQmCC" class="node-img">
+                        <div style="margin-top:10px;">
+                            <span style="font-weight:900; font-size:18px;">$${t.p}</span><br>
+                            <small style="color:#666; font-size:9px;">Daily ROI: $${t.d}</small>
+                        </div>
+                        <button onclick="buyNode(${t.p}, ${t.d})" class="btn-nova" style="padding:8px; font-size:9px; margin-top:10px;">Purchase Node</button>
                     </div>`;
             });
         }
 
-        window.setMode = (m) => { fMode = m; alert("Selected Mode: " + m); };
-
-        window.submitFinance = async () => {
-            const a = document.getElementById('f-amt').value; const tx = document.getElementById('f-tx').value;
-            if(!a || !tx) return alert("Missing Info");
-            await addDoc(collection(db, "requests"), { user, amount: parseFloat(a), txid: tx, type: fMode, status: "Pending", time: Date.now() });
-            alert(fMode + " request logged!");
+        window.buyNode = async (price, yieldAmt) => {
+            const ref = doc(db, "users", user);
+            const snap = await getDoc(ref);
+            if(snap.data().balance < price) return alert("Insufficient Capital in Terminal");
+            
+            await updateDoc(ref, { 
+                balance: snap.data().balance - price,
+                daily: (snap.data().daily || 0) + yieldAmt 
+            });
+            alert("Protocol Activated: Mining Started");
         };
 
-        function startToasts() {
-            const users = ["X-Crypto", "Zaid_99", "Elite_King", "Sam_Trader", "VIP_User"];
-            setInterval(() => {
-                if(Math.random() > 0.7) {
-                    const t = document.getElementById('payout-toast');
-                    const u = users[Math.floor(Math.random()*users.length)];
-                    const a = (Math.random()*1000).toFixed(2);
-                    t.innerText = `🔥 LIVE: ${u} successfully withdrew $${a}`;
-                    t.style.display = 'block';
-                    setTimeout(() => t.style.display='none', 4000);
-                }
-            }, 8000);
-        }
+        window.claimDaily = async () => {
+            const ref = doc(db, "users", user);
+            const snap = await getDoc(ref);
+            const now = Date.now();
+            if(now - snap.data().lastBonus < 86400000) return alert("Bonus already synced for today");
 
-        function loadAdmin() {
-            onSnapshot(collection(db, "requests"), (snap) => {
-                const l = document.getElementById('adm-list'); l.innerHTML = "";
+            await updateDoc(ref, { 
+                balance: snap.data().balance + 1, 
+                lastBonus: now 
+            });
+            alert("Elite Login Bonus Claimed: +$1.00");
+        };
+
+        window.previewProof = (el) => {
+            const file = el.files[0];
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                base64Img = reader.result;
+                document.getElementById('preview-box').style.backgroundImage = `url(${base64Img})`;
+                document.getElementById('preview-box').innerText = "";
+            };
+            reader.readAsDataURL(file);
+        };
+
+        window.finTab = (t) => {
+            document.getElementById('dep-box').style.display = t === 'dep' ? 'block' : 'none';
+            document.getElementById('wd-box').style.display = t === 'wd' ? 'block' : 'none';
+        };
+
+        window.submitDep = async () => {
+            const amt = document.getElementById('dep-amt').value;
+            const tid = document.getElementById('dep-tid').value;
+            if(!amt || !tid || !base64Img) return alert("Submission Rejected: Evidence Missing");
+
+            await addDoc(collection(db, "transactions"), {
+                user, amount: parseFloat(amt), tid, type: 'Deposit', 
+                method: document.getElementById('dep-method').value,
+                proof: base64Img, status: 'Pending', time: Date.now()
+            });
+            alert("Assets queued for verification.");
+        };
+
+        window.submitWd = async () => {
+            const amt = document.getElementById('wd-amt').value;
+            if(!amt || amt < 10) return alert("Minimum withdrawal is $10");
+            
+            await addDoc(collection(db, "transactions"), {
+                user, amount: parseFloat(amt), type: 'Withdrawal',
+                method: document.getElementById('wd-method').value,
+                account: document.getElementById('wd-acc').value,
+                status: 'Pending', time: Date.now()
+            });
+            alert("Payout request submitted to worldwide network.");
+        };
+
+        function loadHistory() {
+            const q = query(collection(db, "transactions"), where("user", "==", user), orderBy("time", "desc"));
+            onSnapshot(q, (snap) => {
+                const list = document.getElementById('trans-history');
+                list.innerHTML = "";
                 snap.forEach(d => {
-                    const r = d.data(); if(r.status === "Pending") {
-                        l.innerHTML += `<div class="glass" style="margin-bottom:15px; border-left:5px solid var(--accent);">
-                            <p>${r.user} | ${r.type}: $${r.amount} <br><small>${r.txid}</small></p>
-                            <button onclick="approveReq('${d.id}','${r.user}',${r.amount},'${r.type}')" style="background:var(--accent); border:none; padding:12px; width:100%; border-radius:15px; font-weight:800;">CONFIRM</button>
-                        </div>`;
-                    }
+                    const t = d.data();
+                    list.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #222; padding-bottom:5px;">
+                        <span>${t.type} ($${t.amount})</span>
+                        <span style="color:${t.status === 'Pending' ? 'var(--gold)' : 'var(--accent)'}">${t.status}</span>
+                    </div>`;
                 });
             });
         }
 
-        window.approveReq = async (id, u, amt, t) => {
-            const r = doc(db, "users", u); const s = await getDoc(r);
-            let b = t === "Deposit" ? (s.data().balance + amt) : (s.data().balance - amt);
-            await updateDoc(r, { balance: b });
-            await updateDoc(doc(db, "requests", id), { status: "Verified" });
-            alert("Action Executed!");
-        };
-
         window.nav = (id, el) => {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-            document.getElementById(id).classList.add('active-screen');
+            document.querySelectorAll('.screen').forEach(s => s.style.display='none');
+            document.getElementById(id).style.display='block';
             document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
+            if(el) el.classList.add('active');
         };
 
-        if(sessionStorage.getItem("nova_user")) startApp(sessionStorage.getItem("nova_user"));
+        if(sessionStorage.getItem("nova_token")) boot(sessionStorage.getItem("nova_token"));
     </script>
 </body>
 </html>
