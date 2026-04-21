@@ -5,209 +5,114 @@
     <title>NOVA | Institutional Asset Infrastructure</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #0A192F;
-            --accent: #64FFDA;
-            --card-bg: #112240;
-            --text-main: #CCD6F6;
-            --text-dim: #8892B0;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--primary);
-            color: var(--text-main);
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Side Info Panel - Professional Details */
-        .info-panel {
-            flex: 1;
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: linear-gradient(135deg, #0A192F 0%, #020c1b 100%);
-            border-right: 1px solid rgba(100, 255, 218, 0.1);
-        }
-
-        .info-panel h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: var(--accent);
-            margin: 0;
-            letter-spacing: -2px;
-        }
-
-        .info-panel p {
-            font-size: 1.1rem;
-            color: var(--text-dim);
-            max-width: 500px;
-            line-height: 1.6;
-            margin: 20px 0;
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .stat-item h3 { color: var(--accent); margin: 0; font-size: 1.5rem; }
-        .stat-item p { font-size: 0.9rem; margin: 5px 0; }
-
-        /* Login Section */
-        .auth-panel {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #020c1b;
-        }
-
-        .auth-card {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
-            border-top: 4px solid var(--accent);
-        }
-
-        .auth-card h2 { text-align: center; margin-bottom: 30px; letter-spacing: 1px; }
-
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-size: 0.8rem; color: var(--accent); margin-bottom: 8px; }
+        :root { --primary: #0A192F; --accent: #64FFDA; --card-bg: #112240; --text-main: #CCD6F6; --text-dim: #8892B0; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--primary); color: var(--text-main); }
         
-        input {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary);
-            border: 1px solid #233554;
-            color: white;
-            border-radius: 4px;
-            box-sizing: border-box;
-            outline: none;
-        }
+        /* Header & Ticker */
+        .ticker { background: #020c1b; color: var(--accent); padding: 8px; font-size: 11px; border-bottom: 1px solid #112240; overflow: hidden; white-space: nowrap; }
+        
+        /* Layout */
+        #landing-page { display: flex; min-height: 100vh; }
+        .info-panel { flex: 1.2; padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+        .auth-panel { flex: 0.8; display: flex; justify-content: center; align-items: center; background: #020c1b; }
+        
+        /* Cards & Buttons */
+        .auth-card { background: var(--card-bg); padding: 40px; border-radius: 12px; width: 100%; max-width: 350px; border-top: 4px solid var(--accent); }
+        .btn-prime { width: 100%; padding: 14px; background: var(--accent); color: var(--primary); border: none; border-radius: 4px; font-weight: 800; cursor: pointer; text-transform: uppercase; margin-top: 10px; }
+        
+        /* Dashboard Styling */
+        #dashboard { display: none; padding: 40px; max-width: 1000px; margin: auto; }
+        .node-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 20px; }
+        .node-item { background: #112240; padding: 10px 15px; border-radius: 6px; font-size: 12px; display: flex; justify-content: space-between; border: 1px solid #233554; }
+        .status-on { color: var(--accent); font-weight: bold; }
 
-        input:focus { border-color: var(--accent); }
-
-        .btn-prime {
-            width: 100%;
-            padding: 14px;
-            background: var(--accent);
-            color: var(--primary);
-            border: none;
-            border-radius: 4px;
-            font-weight: 800;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        .btn-prime:hover { transform: translateY(-2px); opacity: 0.9; }
-
-        #dashboard { display: none; width: 100%; text-align: center; padding: 100px; }
-
-        @media (max-width: 900px) {
-            body { flex-direction: column; }
-            .info-panel { padding: 40px; text-align: center; }
-            .info-panel p { margin: 20px auto; }
-        }
+        input, select { width: 100%; padding: 12px; background: #0A192F; border: 1px solid #233554; color: white; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; }
+        @media (max-width: 900px) { #landing-page { flex-direction: column; } }
     </style>
 </head>
 <body>
 
-    <div id="landing-page" style="display: flex; width: 100%;">
+    <div class="ticker">
+        <marquee>BTC/USD: $64,231.50 (+1.2%) &nbsp;&nbsp; | &nbsp;&nbsp; ETH/USD: $3,452.10 (-0.5%) &nbsp;&nbsp; | &nbsp;&nbsp; NOVA GLOBAL STATUS: SECURE &nbsp;&nbsp; | &nbsp;&nbsp; ACTIVE NODES: 1,842 ONLINE</marquee>
+    </div>
+
+    <div id="landing-page">
         <div class="info-panel">
-            <h1>NOVA.</h1>
-            <p>Empowering global investors with institutional-grade digital asset infrastructure. Secure, transparent, and built for the next generation of capital.</p>
-            
-            <div class="stats">
-                <div class="stat-item">
-                    <h3>$2.4B+</h3>
-                    <p>Global Assets Managed</p>
-                </div>
-                <div class="stat-item">
-                    <h3>24/7</h3>
-                    <p>Network Uptime</p>
-                </div>
-                <div class="stat-item">
-                    <h3>AES-256</h3>
-                    <p>Military Grade Encryption</p>
-                </div>
-                <div class="stat-item">
-                    <h3>100%</h3>
-                    <p>Anonymous Protocol</p>
-                </div>
+            <h1 style="font-size: 3.5rem; color: var(--accent); margin:0;">NOVA.</h1>
+            <p style="color: var(--text-dim); max-width: 500px;">Institutional-grade digital asset infrastructure. Secure your capital with our global node-based distribution protocol.</p>
+            <div style="margin-top: 20px; font-size: 0.9rem;">
+                <p>🟢 10 Primary Clusters Active</p>
+                <p>🔵 5 Verification Layers Online</p>
             </div>
         </div>
-
         <div class="auth-panel">
-            <div class="auth-card" id="auth-box">
-                <h2 id="auth-title">TERMINAL ACCESS</h2>
-                
-                <div class="input-group">
-                    <label>IDENTIFICATION</label>
-                    <input type="text" id="username" placeholder="Enter username">
-                </div>
-
-                <div class="input-group">
-                    <label>SECURITY KEY</label>
-                    <input type="password" id="password" placeholder="••••••••">
-                </div>
-
-                <button class="btn-prime" onclick="attemptLogin()">Authorize Session</button>
-                
-                <p style="text-align: center; font-size: 0.7rem; color: var(--text-dim); margin-top: 20px;">
-                    Protected by NOVA Shield Protocol &copy; 2026
-                </p>
+            <div class="auth-card">
+                <h2 style="text-align: center;">ACCESS PORTAL</h2>
+                <input type="text" id="username" placeholder="Identification">
+                <input type="password" id="password" placeholder="Security Key">
+                <button class="btn-prime" onclick="login()">Authorize Session</button>
             </div>
         </div>
     </div>
 
     <div id="dashboard">
-        <h1 style="color: var(--accent);">SESSION ACTIVE</h1>
-        <p>Deposit Address for Institutional Funding:</p>
-        <div style="background: #112240; padding: 20px; border-radius: 8px; display: inline-block; font-family: monospace; border: 1px dashed var(--accent);">
-            0xc270914e5a9e72C5994fb4bd9BbdD9A3425303f2
+        <h1 style="color: var(--accent);">TERMINAL ACTIVE</h1>
+        
+        <h3>Global Infrastructure Nodes (15)</h3>
+        <div class="node-grid" id="nodeList">
+            </div>
+
+        <div style="background: #112240; padding: 30px; border-radius: 12px; margin-top: 40px; border: 1px solid var(--accent);">
+            <h3>Institutional Funding</h3>
+            <p style="font-size: 13px;">Transfer funds to the secure managed address below to activate your private node.</p>
+            <div style="background: #020c1b; padding: 15px; border-radius: 5px; font-family: monospace; color: var(--accent); margin-bottom: 20px; border: 1px dashed #444;">
+                0xc270914e5a9e72C5994fb4bd9BbdD9A3425303f2
+            </div>
+            <input type="text" id="txid" placeholder="Paste Transaction Hash (TXID)">
+            <button class="btn-prime" onclick="verifyTX()">Activate Node</button>
         </div>
-        <br><br>
-        <button class="btn-prime" style="width: 200px;" onclick="logout()">Terminate Session</button>
+        <br>
+        <button onclick="logout()" style="background:none; color:var(--text-dim); border:none; cursor:pointer;">Terminate Session</button>
     </div>
 
     <script>
-        function attemptLogin() {
+        // Node Data (10 Primary + 5 Backup)
+        const nodes = [
+            "NV-Alpha (London)", "NV-Beta (Tokyo)", "NV-Gamma (New York)", "NV-Delta (Singapore)", 
+            "NV-Epsilon (Frankfurt)", "NV-Zeta (Sydney)", "NV-Eta (Dubai)", "NV-Theta (Paris)", 
+            "NV-Iota (Hong Kong)", "NV-Kappa (Zurich)", 
+            "V-Layer-1 (Secure)", "V-Layer-2 (Secure)", "V-Layer-3 (Secure)", "V-Layer-4 (Secure)", "V-Layer-5 (Secure)"
+        ];
+
+        const list = document.getElementById('nodeList');
+        nodes.forEach(node => {
+            list.innerHTML += `<div class="node-item"><span>${node}</span><span class="status-on">ONLINE</span></div>`;
+        });
+
+        function login() {
             const u = document.getElementById('username').value;
             const p = document.getElementById('password').value;
-
-            // Default credentials (aap change kar sakti hain)
             if(u === "nova_global" && p === "nova786") {
-                localStorage.setItem("session", "valid");
-                showSecure();
-            } else {
-                alert("Access Denied: Invalid Credentials.");
+                localStorage.setItem("session", "active");
+                render();
+            } else { alert("Access Denied, sweetie."); }
+        }
+
+        function verifyTX() {
+            const tx = document.getElementById('txid').value;
+            if(tx.length > 10) { alert("Verification Started. Node will be active within 30 mins."); }
+            else { alert("Enter valid TXID."); }
+        }
+
+        function render() {
+            if(localStorage.getItem("session") === "active") {
+                document.getElementById('landing-page').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
             }
         }
 
-        function showSecure() {
-            document.getElementById('landing-page').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'block';
-        }
-
-        function logout() {
-            localStorage.removeItem("session");
-            location.reload();
-        }
-
-        if(localStorage.getItem("session") === "valid") {
-            showSecure();
-        }
+        function logout() { localStorage.removeItem("session"); location.reload(); }
+        render();
     </script>
 </body>
 </html>
