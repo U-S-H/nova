@@ -56,33 +56,149 @@
 
         <div id="dash-screen" class="screen active-screen px-4 pt-4">
     
-    <div class="nova-card p-6 mb-4 bg-slate-900 text-white relative overflow-hidden shadow-2xl">
-        <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center mb-4 px-1">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center border border-yellow-500/50">
+                <i class="fa-solid fa-user text-[10px] text-yellow-500"></i>
+            </div>
             <div>
-                <p class="text-[9px] text-slate-400 font-black uppercase tracking-widest">Active Operator</p>
-                <h3 id="display-username" class="text-lg font-black text-[#D4AF37]">@USER</h3>
-            </div>
-            <div class="text-right">
-                <span class="bg-green-500/20 text-green-400 text-[8px] font-black px-2 py-1 rounded-full border border-green-500/30">SYSTEM ONLINE</span>
+                <p class="text-[7px] text-slate-400 font-black uppercase">Verified Partner</p>
+                <h3 id="display-username" class="text-[11px] font-black text-slate-800 tracking-tight">@SESSION_USER</h3>
             </div>
         </div>
+        <div class="bg-green-50 px-2 py-1 rounded-full border border-green-100 flex items-center gap-1">
+            <span class="w-1 h-1 bg-green-500 rounded-full animate-pulse"></span>
+            <span class="text-[7px] font-black text-green-600 uppercase">Server: Tokyo-01</span>
+        </div>
+    </div>
 
-        <div class="text-center mb-6">
-            <p class="text-[9px] text-slate-400 font-bold uppercase mb-1">Available Liquidity</p>
-            <h1 id="main-bal" class="text-5xl font-extrabold text-white tracking-tighter">$0.00</h1>
-        </div>
+    <div class="nova-card p-6 mb-4 bg-slate-900 text-white relative overflow-hidden shadow-xl border-b-4 border-yellow-600">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-yellow-500/10 rounded-full blur-2xl"></div>
+        
+        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1 text-center">Available Liquidity</p>
+        <h1 id="main-bal" class="text-5xl font-extrabold text-white text-center tracking-tighter mb-6">$0.00</h1>
 
         <div class="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
             <div>
-                <p class="text-[8px] text-slate-400 font-bold uppercase">Daily Yield</p>
+                <p class="text-[8px] text-slate-400 font-bold uppercase mb-1">Daily Yield</p>
                 <p id="v-daily" class="text-sm font-black text-green-400">+$0.00</p>
             </div>
             <div class="text-right">
-                <p class="text-[8px] text-slate-400 font-bold uppercase">Total Profit</p>
+                <p class="text-[8px] text-slate-400 font-bold uppercase mb-1">Total Profit</p>
                 <p id="total-profit" class="text-sm font-black text-[#D4AF37]">$0.00</p>
             </div>
         </div>
 
+        <div class="mt-4 bg-white/5 rounded-xl p-3 flex justify-between items-center border border-white/5">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-clock-rotate-left text-yellow-500 text-[10px]"></i>
+                <span class="text-[8px] font-black text-slate-300 uppercase">Next Yield Cycle</span>
+            </div>
+            <span id="yield-timer" class="text-[11px] font-mono font-bold text-yellow-500 tracking-widest">23:59:59</span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 mb-4">
+        <button onclick="openModal('dep-modal')" class="nova-card p-4 flex items-center gap-3 active:scale-95 transition bg-white border-b-2 border-slate-200">
+            <div class="w-10 h-10 rounded-xl bg-yellow-50 flex items-center justify-center text-yellow-600 shadow-inner">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <span class="text-[10px] font-black uppercase text-slate-700">Add Funds</span>
+        </button>
+        <button onclick="openModal('wd-modal')" class="nova-card p-4 flex items-center gap-3 active:scale-95 transition bg-white border-b-2 border-slate-200">
+            <div class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 shadow-inner">
+                <i class="fa-solid fa-vault"></i>
+            </div>
+            <span class="text-[10px] font-black uppercase text-slate-700">Withdraw</span>
+        </button>
+    </div>
+
+    <div class="nova-card p-5 mb-4 space-y-4">
+        <div>
+            <div class="flex justify-between items-center mb-2">
+                <p class="text-[8px] font-black text-slate-400 uppercase">Partner Referral Link</p>
+                <span class="text-[7px] font-bold text-green-500 bg-green-50 px-2 py-0.5 rounded border border-green-100">+10% BONUS</span>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" id="ref-link" readonly class="p-input mb-0 py-2.5 text-[9px] font-mono bg-slate-50 border-slate-200 flex-1" value="https://nova.io/join?ref=user">
+                <button onclick="copyRef()" class="btn-gold px-4 text-[9px] rounded-lg">Copy</button>
+            </div>
+        </div>
+
+        <div class="pt-2 border-t border-slate-100">
+            <p class="text-[8px] font-black text-slate-400 uppercase mb-2">Redeem Promo Voucher</p>
+            <div class="flex gap-2">
+                <input type="text" id="promo-input" placeholder="ENTER CODE" class="p-input mb-0 py-2.5 text-[9px] font-bold uppercase border-slate-200 flex-1">
+                <button onclick="applyPromo()" class="bg-slate-900 text-white px-5 text-[9px] font-bold rounded-lg uppercase transition active:scale-95">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="nova-card p-5 mb-4">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-[9px] font-black uppercase flex items-center gap-2">
+                <i class="fa-solid fa-users-viewfinder text-yellow-600"></i> Organization Stats
+            </h3>
+            <i class="fa-solid fa-chevron-right text-[8px] text-slate-300"></i>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-center">
+                <p id="direct-count" class="text-sm font-black text-slate-800">0</p>
+                <p class="text-[7px] font-bold text-slate-400 uppercase">Directs</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-center">
+                <p id="team-count" class="text-sm font-black text-slate-800">0</p>
+                <p class="text-[7px] font-bold text-slate-400 uppercase">Total Team</p>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-center">
+                <p id="team-earn" class="text-sm font-black text-green-600">$0.00</p>
+                <p class="text-[7px] font-bold text-slate-400 uppercase">Comm.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="nova-card p-5 bg-gradient-to-br from-slate-50 to-white border-2 border-slate-100 mb-6 relative overflow-hidden">
+        <div class="absolute right-0 bottom-0 opacity-10">
+            <i class="fa-solid fa-building-shield text-5xl translate-x-2 translate-y-2"></i>
+        </div>
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center p-2 border border-slate-100">
+                <img src="https://cdn-icons-png.flaticon.com/512/2583/2583264.png" class="w-full">
+            </div>
+            <div>
+                <h3 class="text-[10px] font-black uppercase text-slate-800">Nova Infrastructure Ltd.</h3>
+                <p class="text-[7px] text-slate-400 font-bold uppercase tracking-wider">Certified UK Entity #09921820</p>
+            </div>
+        </div>
+        <p class="text-[9px] text-slate-500 leading-relaxed font-medium">
+            Global ASIC-cluster operator specializing in high-density liquid-cooled mining solutions for institutional partners.
+        </p>
+    </div>
+</div>
+
+<script>
+    // TIMER LOGIC: Counts down to midnight daily
+    function runDashboardTimer() {
+        setInterval(() => {
+            const now = new Date();
+            const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            const diff = tomorrow - now;
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60)).toString().padStart(2, '0');
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            const secs = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            
+            const timerEl = document.getElementById('yield-timer');
+            if(timerEl) timerEl.innerText = `${hours}:${mins}:${secs}`;
+        }, 1000);
+    }
+    runDashboardTimer();
+
+    // NOTE FOR INTEGRATION:
+    // In your start(id) function, add these lines:
+    // document.getElementById('display-username').innerText = `@${id.toUpperCase()}`;
+    // document.getElementById('ref-link').value = `https://u-s-h.github.io/Coin/?ref=${id}`;
+</script>
         <div class="mt-4 bg-white/5 rounded-lg p-2 flex justify-between items-center">
             <span class="text-[8px] font-black text-slate-300 uppercase">Next Yield In:</span>
             <span id="yield-timer" class="text-[10px] font-mono font-bold text-yellow-500">23:59:59</span>
