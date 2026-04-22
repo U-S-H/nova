@@ -55,32 +55,136 @@
         </header>
 
         <div id="dash-screen" class="screen active-screen px-4 pt-4">
-            <div class="nova-card p-8 mb-4 bg-slate-900 text-center text-white relative overflow-hidden">
-                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-2">Total Assets</p>
-                <h1 id="main-bal" class="text-5xl font-extrabold text-[#D4AF37]">$0.00</h1>
-                <p id="v-daily" class="text-[10px] font-bold text-green-400 mt-4 uppercase">Node Yield: +$0.00 / 24H</p>
+    
+    <div class="nova-card p-6 mb-4 bg-slate-900 text-white relative overflow-hidden shadow-2xl">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <p class="text-[9px] text-slate-400 font-black uppercase tracking-widest">Active Operator</p>
+                <h3 id="display-username" class="text-lg font-black text-[#D4AF37]">@USER</h3>
             </div>
-
-            <div class="grid grid-cols-2 gap-3 mb-4">
-                <button onclick="openModal('dep-modal')" class="nova-card p-5 flex flex-col items-center gap-2"><i class="fa-solid fa-circle-plus text-[#D4AF37] text-xl"></i><span class="text-[10px] font-black uppercase">Deposit</span></button>
-                <button onclick="openModal('wd-modal')" class="nova-card p-5 flex flex-col items-center gap-2"><i class="fa-solid fa-wallet text-slate-400 text-xl"></i><span class="text-[10px] font-black uppercase">Withdraw</span></button>
-            </div>
-
-            <div class="nova-card p-5 mb-4 flex justify-between items-center">
-                <div><p class="text-[9px] font-black text-slate-400 uppercase">Voucher Claim</p><p class="text-xs font-bold">$0.10 - $0.50 Daily</p></div>
-                <button id="bonus-btn" onclick="claimBonus()" class="btn-gold px-6 py-2.5">Claim</button>
-            </div>
-
-            <div id="about-section" class="nova-card p-6 bg-slate-50 border-dashed border-2 border-slate-200 mb-4">
-                <h3 class="text-xs font-black uppercase mb-3 flex items-center gap-2"><i class="fa-solid fa-building-shield text-[#D4AF37]"></i> Corporate Identity</h3>
-                <p class="text-[10px] text-slate-500 leading-relaxed font-medium">
-                    NOVA Institutional Mining is a globally certified ASIC infrastructure provider. Registration: #UK-09921820. 
-                    <br><br>
-                    We operate high-density hash clusters for secure digital asset growth across worldwide markets.
-                </p>
+            <div class="text-right">
+                <span class="bg-green-500/20 text-green-400 text-[8px] font-black px-2 py-1 rounded-full border border-green-500/30">SYSTEM ONLINE</span>
             </div>
         </div>
 
+        <div class="text-center mb-6">
+            <p class="text-[9px] text-slate-400 font-bold uppercase mb-1">Available Liquidity</p>
+            <h1 id="main-bal" class="text-5xl font-extrabold text-white tracking-tighter">$0.00</h1>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
+            <div>
+                <p class="text-[8px] text-slate-400 font-bold uppercase">Daily Yield</p>
+                <p id="v-daily" class="text-sm font-black text-green-400">+$0.00</p>
+            </div>
+            <div class="text-right">
+                <p class="text-[8px] text-slate-400 font-bold uppercase">Total Profit</p>
+                <p id="total-profit" class="text-sm font-black text-[#D4AF37]">$0.00</p>
+            </div>
+        </div>
+
+        <div class="mt-4 bg-white/5 rounded-lg p-2 flex justify-between items-center">
+            <span class="text-[8px] font-black text-slate-300 uppercase">Next Yield In:</span>
+            <span id="yield-timer" class="text-[10px] font-mono font-bold text-yellow-500">23:59:59</span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3 mb-4">
+        <button onclick="openModal('dep-modal')" class="nova-card p-4 flex items-center gap-3 active:scale-95 transition">
+            <div class="w-10 h-10 rounded-full bg-yellow-50 flex items-center justify-center text-[#D4AF37] shadow-inner">
+                <i class="fa-solid fa-arrow-down-to-bracket"></i>
+            </div>
+            <span class="text-[10px] font-black uppercase text-slate-700">Deposit</span>
+        </button>
+        <button onclick="openModal('wd-modal')" class="nova-card p-4 flex items-center gap-3 active:scale-95 transition">
+            <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 shadow-inner">
+                <i class="fa-solid fa-paper-plane"></i>
+            </div>
+            <span class="text-[10px] font-black uppercase text-slate-700">Withdraw</span>
+        </button>
+    </div>
+
+    <div class="space-y-3 mb-4">
+        <div class="nova-card p-4">
+            <div class="flex justify-between items-center mb-2">
+                <p class="text-[9px] font-black text-slate-400 uppercase">Partner Referral Link</p>
+                <span class="text-[8px] font-bold text-green-500">+10% Commission</span>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" id="ref-link" readonly class="p-input mb-0 py-2 text-[10px] font-mono bg-slate-50" value="https://nova.io/ref=user">
+                <button onclick="copyRef()" class="btn-gold px-4 text-[10px] rounded-lg">Copy</button>
+            </div>
+        </div>
+
+        <div class="nova-card p-4">
+            <p class="text-[9px] font-black text-slate-400 uppercase mb-2">System Promo Code</p>
+            <div class="flex gap-2">
+                <input type="text" id="promo-input" placeholder="ENTER CODE" class="p-input mb-0 py-2 text-[10px] font-bold uppercase">
+                <button onclick="applyPromo()" class="btn-gold px-6 rounded-lg">Redeem</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="nova-card p-5 mb-4">
+        <h3 class="text-[10px] font-black uppercase mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-users text-[#D4AF37]"></i> My Mining Team
+        </h3>
+        <div class="grid grid-cols-3 gap-2 text-center">
+            <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+                <p class="text-[14px] font-black text-slate-800">0</p>
+                <p class="text-[7px] font-bold text-slate-400 uppercase">Directs</p>
+            </div>
+            <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+                <p class="text-[14px] font-black text-slate-800">0</p>
+                <p class="text-[7px] font-bold text-slate-400 uppercase">Team Size</p>
+            </div>
+            <div class="bg-slate-50 p-2 rounded-xl border border-slate-100">
+                <p class="text-[14px] font-black text-slate-800">$0.00</p>
+                <p class="text-[7px] font-bold text-slate-400 uppercase">Earnings</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="nova-card p-6 bg-slate-50 border-dashed border-2 border-slate-200 mb-6">
+        <div class="flex items-center gap-3 mb-3">
+            <img src="https://cdn-icons-png.flaticon.com/512/2583/2583264.png" class="w-8 h-8 opacity-80">
+            <div>
+                <h3 class="text-[10px] font-black uppercase tracking-tighter">Nova Institutional Ltd.</h3>
+                <p class="text-[8px] text-slate-400 font-bold">Registered Office: London, UK</p>
+            </div>
+        </div>
+        <p class="text-[10px] text-slate-500 leading-relaxed font-medium">
+            Nova is a verified cloud-mining infrastructure provider. We utilize high-density ASIC clusters and liquid-cooling technology to ensure 99.9% uptime for our global partners.
+        </p>
+        <div class="mt-4 pt-4 border-t border-slate-200 flex justify-between items-center">
+            <span class="text-[8px] font-black text-slate-400">LICENSE #UK-09921820</span>
+            <i class="fa-solid fa-certificate text-blue-500"></i>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Timer Countdown Logic
+    function startYieldTimer() {
+        setInterval(() => {
+            const now = new Date();
+            const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            const diff = tomorrow - now;
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60)).toString().padStart(2, '0');
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            const secs = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            
+            document.getElementById('yield-timer').innerText = `${hours}:${mins}:${secs}`;
+        }, 1000);
+    }
+    startYieldTimer();
+
+    // Set Username on Start
+    // Inside your start(id) function:
+    // document.getElementById('display-username').innerText = `@${id.toUpperCase()}`;
+    // document.getElementById('ref-link').value = `https://u-s-h.github.io/Coin/?ref=${id}`;
+</script>
         <div id="mine-screen" class="screen px-4 pt-4">
             <h2 class="text-xl font-black mb-5 uppercase tracking-tighter">Mining <span class="text-[#D4AF37]">Nodes</span></h2>
             <div id="nodes-container" class="space-y-4"></div>
