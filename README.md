@@ -240,13 +240,24 @@
             alert("Protocol Submitted!"); closeModal(type=='Deposit'?'dep-modal':'wd-modal');
         };
 
-        function loadHistory() {
-            onSnapshot(query(collection(db, "logs"), where("user", "==", user), orderBy("time", "desc")), s => {
-                const c = document.getElementById('hist-container'); c.innerHTML = "";
-                s.forEach(d => {
-                    const r = d.data();
+                function loadHistory() {
+            // Simplified query to avoid index errors
+            onSnapshot(query(collection(db, "logs"), where("user", "==", user)), s => {
+                const c = document.getElementById('hist-container'); 
+                c.innerHTML = "";
+                
+                let logs = [];
+                s.forEach(d => logs.push(d.data()));
+
+                // Manual sorting in JavaScript so it works 100% without extra Firebase settings
+                logs.sort((a, b) => b.time - a.time);
+
+                logs.forEach(r => {
                     c.innerHTML += `<div class="nova-card p-4 flex justify-between items-center">
-                        <div><p class="text-[8px] font-black text-slate-400 uppercase">${r.type} (${r.method})</p><p class="text-xs font-bold">$${r.amount}</p></div>
+                        <div>
+                            <p class="text-[8px] font-black text-slate-400 uppercase">${r.type} (${r.method})</p>
+                            <p class="text-xs font-bold">$${r.amount.toFixed(2)}</p>
+                        </div>
                         <span class="text-[9px] font-bold px-3 py-1 rounded-full ${r.status=='Success'?'badge-success':'badge-pending'}">${r.status}</span>
                     </div>`;
                 });
