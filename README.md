@@ -188,31 +188,43 @@
         }
 
         function loadNodes() {
-            const c = document.getElementById('nodes-container'); c.innerHTML = "";
-            const plans = [
-                [20, 1.60, "NOVA STARTER", false], [100, 8.50, "NOVA BASIC", false], 
-                [300, 27.00, "NOVA PRO", false], [600, 58.00, "NOVA ELITE", false], 
-                [1000, 110.00, "NOVA MASTER", false],
-                [2500, 300.00, "CORPORATE GIANT (BIG DEAL)", true],
-                [5000, 650.00, "INSTITUTIONAL WHALE (BIG DEAL)", true],
-                [10000, 1400.00, "GLOBAL CLUSTER (SPECIAL)", true],
-                [20000, 3500.00, "ULTIMATE RIG (SPECIAL)", true]
-            ];
-            plans.forEach(p => {
-                c.innerHTML += `
-                <div class="nova-card overflow-hidden ${p[3] ? 'border-2 border-yellow-500 shadow-lg shadow-yellow-500/10' : ''}">
-                    <div class="${p[3] ? 'special-gradient' : 'node-gradient'} h-16 flex items-center px-5 justify-between">
-                        <i class="fa-solid fa-microchip text-white/30 text-2xl"></i>
-                        ${p[3] ? '<span class="text-[8px] bg-white text-yellow-600 font-black px-2 py-1 rounded">BIG DEAL</span>' : ''}
-                    </div>
-                    <div class="p-4 flex justify-between items-center">
-                        <div><h4 class="text-[10px] font-black uppercase">${p[2]}</h4><p class="text-[9px] font-bold text-green-500">+$${p[1]}/Day</p></div>
-                        <div class="text-right"><p class="text-xs font-black">$${p[0]}</p><button onclick="buyNode(${p[0]},${p[1]})" class="btn-gold px-3 py-1.5 mt-1">Deploy</button></div>
-                    </div>
-                </div>`;
-            });
-        }
+        const c = document.getElementById('nodes-container'); 
+        c.innerHTML = "";
+        
+        const plans = [
+            {p: 20, d: 1.60, n: "Nova Antminer S19", img: "https://images.unsplash.com/photo-1624555130581-1d9cca783bc0?auto=format&fit=crop&q=80&w=400", spec: "110 TH/s | Air Cooled", hot: false},
+            {p: 100, d: 8.50, n: "Nova Whatsminer M30", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=400", spec: "134 TH/s | Stable Power", hot: false},
+            {p: 300, d: 27.00, n: "Nova Avalon 1246", img: "https://images.unsplash.com/photo-1591405351990-4726e331f141?auto=format&fit=crop&q=80&w=400", spec: "90 TH/s | Eco Mode", hot: false},
+            {p: 600, d: 58.00, n: "Nova Liquid-Cool X5", img: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=80&w=400", spec: "200 TH/s | Water Tech", hot: false},
+            {p: 1000, d: 110.00, n: "Nova Master Cluster", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=400", spec: "Full ASIC Rack Set", hot: false},
+            {p: 2500, d: 300.00, n: "Corporate Giant (Big Deal)", img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=400", spec: "Tier 4 Data Center", hot: true},
+            {p: 5000, d: 650.00, n: "Institutional Whale", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=400", spec: "Dedicated Power Grid", hot: true},
+            {p: 10000, d: 1400.00, n: "Global Hash Farm", img: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=400", spec: "Mega-Hash Authority", hot: true}
+        ];
 
+        plans.forEach(plan => {
+            c.innerHTML += `
+            <div class="nova-card overflow-hidden relative ${plan.hot ? 'border-2 border-yellow-500' : ''}">
+                ${plan.hot ? '<div class="absolute top-2 right-2 bg-yellow-500 text-white text-[8px] px-2 py-1 rounded-full font-black z-10 shadow-lg">HOT DEAL</div>' : ''}
+                <img src="${plan.img}" class="node-img" alt="${plan.n}">
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h3 class="text-xs font-black text-slate-800 uppercase">${plan.n}</h3>
+                            <p class="text-[8px] text-slate-400 font-bold">${plan.spec}</p>
+                        </div>
+                        <p class="text-sm font-black text-slate-900">$${plan.p}</p>
+                    </div>
+                    <div class="flex justify-between items-center mt-4">
+                        <div class="bg-green-50 px-2 py-1 rounded">
+                            <p class="text-[9px] font-black text-green-600">Daily: +$${plan.d}</p>
+                        </div>
+                        <button onclick="buyNode(${plan.p},${plan.d})" class="btn-gold px-5 py-2">Deploy</button>
+                    </div>
+                </div>
+            </div>`;
+        });
+    }
         window.buyNode = async (p, d) => {
             const uR = doc(db, "users", user); const s = await getDoc(uR);
             if(s.data().balance < p) return alert("Low Liquidity");
