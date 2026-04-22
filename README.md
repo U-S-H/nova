@@ -11,6 +11,7 @@
         body { background: var(--n-bg); font-family: 'Plus Jakarta Sans', sans-serif; color: #1e293b; overflow-x: hidden; }
         .nova-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
         .node-gradient { background: linear-gradient(135deg, #1e293b 0%, #334155 100%); }
+        .special-gradient { background: linear-gradient(135deg, #B8860B 0%, #D4AF37 100%); }
         .btn-gold { background: linear-gradient(135deg, #B8860B, #D4AF37); color: white; border-radius: 12px; font-weight: 700; transition: 0.2s; text-transform: uppercase; font-size: 11px; }
         .btn-gold:active { transform: scale(0.96); }
         .screen { display: none; padding-bottom: 110px; animation: fadeIn 0.3s ease-in; }
@@ -70,19 +71,12 @@
                 <button id="bonus-btn" onclick="claimBonus()" class="btn-gold px-6 py-2.5">Claim</button>
             </div>
 
-            <div class="nova-card p-5 mb-4">
-                <div class="flex gap-2">
-                    <input type="text" id="promo-inp" placeholder="PROMO CODE" class="p-input mb-0 py-2.5 text-[11px] font-bold">
-                    <button onclick="applyPromo()" class="btn-gold px-6">Apply</button>
-                </div>
-            </div>
-
-            <div id="about-section" class="nova-card p-6 bg-slate-50 border-dashed border-2 border-slate-200">
+            <div id="about-section" class="nova-card p-6 bg-slate-50 border-dashed border-2 border-slate-200 mb-4">
                 <h3 class="text-xs font-black uppercase mb-3 flex items-center gap-2"><i class="fa-solid fa-building-shield text-[#D4AF37]"></i> Corporate Identity</h3>
                 <p class="text-[10px] text-slate-500 leading-relaxed font-medium">
-                    NOVA Institutional Mining is a globally certified ASIC infrastructure provider. Established in 2021, we operate high-density hash clusters across Northern Europe. 
+                    NOVA Institutional Mining is a globally certified ASIC infrastructure provider. Registration: #UK-09921820. 
                     <br><br>
-                    Registration: #UK-09921820 | Certified by Global Hash Council.
+                    We operate high-density hash clusters for secure digital asset growth across worldwide markets.
                 </p>
             </div>
         </div>
@@ -109,15 +103,14 @@
             <h2 class="text-2xl font-black uppercase">Liquidity</h2>
             <i onclick="closeModal('dep-modal')" class="fa-solid fa-circle-xmark text-slate-300 text-xl"></i>
         </div>
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <div onclick="selD('Binance Pay')" class="dep-m nova-card p-3 text-center border-2 border-slate-100" id="m-bin"><i class="fa-solid fa-coins text-yellow-500 mb-1"></i><p class="text-[9px] font-bold">Binance</p></div>
-            <div onclick="selD('Trust Wallet')" class="dep-m nova-card p-3 text-center border-2 border-slate-100"><i class="fa-solid fa-shield text-blue-500 mb-1"></i><p class="text-[9px] font-bold">Trust</p></div>
-            <div onclick="selD('MetaMask')" class="dep-m nova-card p-3 text-center border-2 border-slate-100"><i class="fa-solid fa-fox text-orange-500 mb-1"></i><p class="text-[9px] font-bold">MetaMask</p></div>
-            <div onclick="selD('Violet')" class="dep-m nova-card p-3 text-center border-2 border-slate-100"><i class="fa-solid fa-wallet text-purple-500 mb-1"></i><p class="text-[9px] font-bold">Violet</p></div>
+        <div class="grid grid-cols-3 gap-2 mb-6">
+            <div onclick="selD('Binance Pay')" class="dep-m nova-card p-2 text-center border-2 border-yellow-500" id="m-bin"><i class="fa-solid fa-coins text-yellow-500 mb-1"></i><p class="text-[8px] font-bold">Binance</p></div>
+            <div onclick="selD('Trust Wallet')" class="dep-m nova-card p-2 text-center border-2 border-slate-100"><i class="fa-solid fa-shield text-blue-500 mb-1"></i><p class="text-[8px] font-bold">Trust</p></div>
+            <div onclick="selD('MetaMask')" class="dep-m nova-card p-2 text-center border-2 border-slate-100"><i class="fa-solid fa-fox text-orange-500 mb-1"></i><p class="text-[8px] font-bold">MetaMask</p></div>
         </div>
         <div class="nova-card p-4 bg-slate-900 text-white mb-6 text-center">
-            <p class="text-[8px] text-slate-400 font-bold uppercase mb-1">Official USDT (TRC20)</p>
-            <p id="dep-addr" class="text-[10px] font-mono break-all font-bold text-[#D4AF37]">T-NETWORK-WAITING-FOR-ADMIN</p>
+            <p class="text-[8px] text-slate-400 font-bold uppercase mb-1">Official Wallet Address</p>
+            <p id="dep-addr" class="text-[10px] font-mono break-all font-bold text-[#D4AF37]">TTSxm4pBK26RB4vXaa3Uo3hqGa5HdhxBDR</p>
         </div>
         <input type="number" id="dep-amt" placeholder="Amount ($)" class="p-input">
         <input type="text" id="dep-tid" placeholder="Transaction Hash (TID)" class="p-input">
@@ -131,12 +124,11 @@
         </div>
         <select id="wd-method" class="p-input font-bold">
             <option>Binance Pay</option>
-            <option>EasyPaisa</option>
             <option>Trust Wallet</option>
             <option>MetaMask</option>
         </select>
-        <input type="number" id="wd-amt" placeholder="Amount to Extract ($)" class="p-input">
-        <input type="text" id="wd-acc" placeholder="Recipient Address / Wallet" class="p-input">
+        <input type="number" id="wd-amt" placeholder="Amount ($)" class="p-input">
+        <input type="text" id="wd-acc" placeholder="Recipient Address" class="p-input">
         <button onclick="reqFin('Withdrawal')" class="w-full btn-gold py-4 bg-slate-900">Request Withdrawal</button>
     </div>
 
@@ -147,14 +139,9 @@
         </div>
         <div class="space-y-6">
             <div class="nova-card p-5 bg-slate-50">
-                <h3 class="text-[10px] font-black mb-3">GLOBAL BROADCAST</h3>
-                <input type="text" id="adm-msg" placeholder="System Alert Message" class="p-input text-xs">
-                <button onclick="sendGlobal()" class="w-full btn-gold py-3">Send Broadcast</button>
-            </div>
-            <div class="nova-card p-5 bg-slate-50">
                 <h3 class="text-[10px] font-black mb-3">BALANCE INJECTION</h3>
                 <input type="text" id="adm-uid" placeholder="User ID" class="p-input text-xs">
-                <input type="number" id="adm-amt" placeholder="Amount to Inject" class="p-input text-xs">
+                <input type="number" id="adm-amt" placeholder="Amount" class="p-input text-xs">
                 <button onclick="injectBal()" class="w-full btn-gold py-3">Update User</button>
             </div>
             <div>
@@ -168,7 +155,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, updateDoc, addDoc, collection, onSnapshot, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // CONFIG (Same as before)
         const config = { apiKey: "AIzaSyAXlQ1tKTJbcnIXNeww9I3d-ukzD7_mUCo", authDomain: "home-94d45.firebaseapp.com", projectId: "home-94d45", appId: "1:964390949419:web:589840cb91b7e42ecd506e" };
         const app = initializeApp(config); const db = getFirestore(app);
         let user = localStorage.getItem('nova_user'); let login = true; let currentM = "Binance Pay";
@@ -183,7 +169,7 @@
             const uRef = doc(db, "users", id); const s = await getDoc(uRef);
             if(!login) {
                 if(s.exists()) return alert("Identity Exists");
-                await setDoc(uRef, { balance: 0, password: pw, daily: 0, bonusUsed: false, promoUsed: false });
+                await setDoc(uRef, { balance: 0, password: pw, daily: 0, bonusUsed: false });
                 localStorage.setItem('nova_user', id); start(id);
             } else if(s.exists() && s.data().password === pw) {
                 localStorage.setItem('nova_user', id); start(id);
@@ -198,25 +184,33 @@
                 document.getElementById('v-daily').innerText = "Node Yield: +$" + (data.daily || 0).toFixed(2) + " / 24H";
                 if(data.bonusUsed) { document.getElementById('bonus-btn').disabled = true; document.getElementById('bonus-btn').innerText = "Claimed"; }
             });
-            onSnapshot(doc(db, "settings", "global"), d => {
-                if(d.exists() && d.data().msg) { document.getElementById('global-msg').innerText = d.data().msg; document.getElementById('global-msg').classList.remove('hidden'); }
-            });
             loadNodes(); loadHistory();
         }
 
         function loadNodes() {
             const c = document.getElementById('nodes-container'); c.innerHTML = "";
-            for(let i=1; i<=20; i++) {
-                let p = i === 1 ? 20 : (i === 20 ? 20000 : i * 1000); 
-                let d = (p * 0.08).toFixed(2);
-                c.innerHTML += `<div class="nova-card overflow-hidden">
-                    <div class="node-gradient h-20 flex items-center justify-center"><i class="fa-solid fa-microchip text-white/20 text-4xl"></i></div>
-                    <div class="p-5 flex justify-between items-center">
-                        <div><h4 class="text-xs font-black uppercase">NOVA ASIC v.${i}</h4><p class="text-[9px] font-bold text-green-500">Yield: +$${d}/Day</p></div>
-                        <div class="text-right"><p class="text-sm font-black mb-1">$${p}</p><button onclick="buyNode(${p},${d})" class="btn-gold px-4 py-2">Deploy</button></div>
+            const plans = [
+                [20, 1.60, "NOVA STARTER", false], [100, 8.50, "NOVA BASIC", false], 
+                [300, 27.00, "NOVA PRO", false], [600, 58.00, "NOVA ELITE", false], 
+                [1000, 110.00, "NOVA MASTER", false],
+                [2500, 300.00, "CORPORATE GIANT (BIG DEAL)", true],
+                [5000, 650.00, "INSTITUTIONAL WHALE (BIG DEAL)", true],
+                [10000, 1400.00, "GLOBAL CLUSTER (SPECIAL)", true],
+                [20000, 3500.00, "ULTIMATE RIG (SPECIAL)", true]
+            ];
+            plans.forEach(p => {
+                c.innerHTML += `
+                <div class="nova-card overflow-hidden ${p[3] ? 'border-2 border-yellow-500 shadow-lg shadow-yellow-500/10' : ''}">
+                    <div class="${p[3] ? 'special-gradient' : 'node-gradient'} h-16 flex items-center px-5 justify-between">
+                        <i class="fa-solid fa-microchip text-white/30 text-2xl"></i>
+                        ${p[3] ? '<span class="text-[8px] bg-white text-yellow-600 font-black px-2 py-1 rounded">BIG DEAL</span>' : ''}
+                    </div>
+                    <div class="p-4 flex justify-between items-center">
+                        <div><h4 class="text-[10px] font-black uppercase">${p[2]}</h4><p class="text-[9px] font-bold text-green-500">+$${p[1]}/Day</p></div>
+                        <div class="text-right"><p class="text-xs font-black">$${p[0]}</p><button onclick="buyNode(${p[0]},${p[1]})" class="btn-gold px-3 py-1.5 mt-1">Deploy</button></div>
                     </div>
                 </div>`;
-            }
+            });
         }
 
         window.buyNode = async (p, d) => {
@@ -226,7 +220,14 @@
             alert("Mining Session Started!");
         };
 
-        window.selD = (m) => { currentM = m; document.querySelectorAll('.dep-m').forEach(e => e.style.borderColor = "#f1f5f9"); event.currentTarget.style.borderColor = "#D4AF37"; };
+        window.selD = (m) => { 
+            currentM = m; document.querySelectorAll('.dep-m').forEach(e => e.style.borderColor = "#f1f5f9");
+            event.currentTarget.style.borderColor = "#D4AF37";
+            const addr = document.getElementById('dep-addr');
+            if(m === 'Binance Pay') addr.innerText = "TTSxm4pBK26RB4vXaa3Uo3hqGa5HdhxBDR";
+            else if(m === 'Trust Wallet') addr.innerText = "0xb584fBe3d7f1A72AEb2A0a76b1bC959841eC0A37";
+            else addr.innerText = "0xc270914e5a9e72C5994fb4bd9BbdD9A3425303f2";
+        };
 
         window.reqFin = async (type) => {
             const amt = parseFloat(document.getElementById(type=='Deposit'?'dep-amt':'wd-amt').value);
@@ -257,11 +258,11 @@
                 const c = document.getElementById('adm-requests'); c.innerHTML = "";
                 s.forEach(d => {
                     const r = d.data();
-                    c.innerHTML += `<div class="nova-card p-5 bg-white border-l-4 ${r.type=='Deposit'?'border-green-500':'border-red-500'}">
-                        <div class="mb-3"><p class="text-[10px] font-black">${r.user} - $${r.amount}</p><p class="text-[8px] text-slate-400 uppercase">${r.type} | ${r.method}</p><p class="text-[8px] font-mono mt-1">${r.ref}</p></div>
-                        <div class="flex gap-2">
-                            <button onclick="admAct('${d.id}','${r.user}',${r.amount},'${r.type}','Success')" class="flex-1 bg-green-500 text-white text-[8px] font-bold py-2.5 rounded-lg">APPROVE</button>
-                            <button onclick="admAct('${d.id}','${r.user}',${r.amount},'${r.type}','Rejected')" class="flex-1 bg-red-500 text-white text-[8px] font-bold py-2.5 rounded-lg">REJECT</button>
+                    c.innerHTML += `<div class="nova-card p-4 bg-white border-l-4 border-yellow-500">
+                        <p class="text-[10px] font-black">${r.user} | $${r.amount}</p>
+                        <div class="flex gap-2 mt-3">
+                            <button onclick="admAct('${d.id}','${r.user}',${r.amount},'${r.type}','Success')" class="bg-green-500 text-white text-[8px] flex-1 py-2 rounded">Approve</button>
+                            <button onclick="admAct('${d.id}','${r.user}',${r.amount},'${r.type}','Rejected')" class="bg-red-500 text-white text-[8px] flex-1 py-2 rounded">Reject</button>
                         </div>
                     </div>`;
                 });
@@ -282,11 +283,14 @@
             alert("Bonus Claimed: $" + b);
         };
 
-        window.sendGlobal = async () => { await setDoc(doc(db, "settings", "global"), { msg: document.getElementById('adm-msg').value }); alert("Broadcast Live!"); };
-        window.injectBal = async () => { const uR = doc(db, "users", document.getElementById('adm-uid').value.toLowerCase().trim()); const s = await getDoc(uR); if(s.exists()) { await updateDoc(uR, { balance: s.data().balance + parseFloat(document.getElementById('adm-amt').value) }); alert("Balance Updated!"); } };
+        window.injectBal = async () => { 
+            const uR = doc(db, "users", document.getElementById('adm-uid').value.toLowerCase().trim()); 
+            const s = await getDoc(uR); if(s.exists()) { await updateDoc(uR, { balance: s.data().balance + parseFloat(document.getElementById('adm-amt').value) }); alert("Updated!"); }
+        };
+
         window.logout = () => { localStorage.removeItem('nova_user'); location.reload(); };
         window.handleTaps = () => { window.taps = (window.taps || 0) + 1; if(window.taps >= 6) document.getElementById('adm-key').classList.remove('hidden'); };
-        window.toggleM = () => { login = !login; document.getElementById('m-text').innerText = login ? "Deploy New Node (Register)" : "Return to Security Access"; };
+        window.toggleM = () => { login = !login; document.getElementById('m-text').innerText = login ? "Deploy New Node (Register)" : "Return to Access"; };
         window.openModal = (id) => document.getElementById(id).style.display = 'block';
         window.closeModal = (id) => document.getElementById(id).style.display = 'none';
         window.nav = (id) => {
