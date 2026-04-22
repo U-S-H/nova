@@ -56,48 +56,119 @@
 
         <div id="dash-screen" class="screen active-screen px-4 pt-4">
     
-    <div class="flex justify-between items-center mb-4 px-1">
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center border border-yellow-500/50">
-                <i class="fa-solid fa-user text-[10px] text-yellow-500"></i>
+    <div class="flex justify-between items-center mb-6 px-1">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center border-2 border-[#D4AF37] shadow-lg">
+                <i class="fa-solid fa-user-shield text-[#D4AF37] text-xs"></i>
             </div>
             <div>
-                <p class="text-[7px] text-slate-400 font-black uppercase">Verified Partner</p>
-                <h3 id="display-username" class="text-[11px] font-black text-slate-800 tracking-tight">@SESSION_USER</h3>
+                <p class="text-[8px] text-slate-400 font-black uppercase tracking-tighter">Verified Partner</p>
+                <h3 id="display-username" class="text-sm font-black text-slate-800 tracking-tight">@SESSION_USER</h3>
             </div>
         </div>
-        <div class="bg-green-50 px-2 py-1 rounded-full border border-green-100 flex items-center gap-1">
-            <span class="w-1 h-1 bg-green-500 rounded-full animate-pulse"></span>
-            <span class="text-[7px] font-black text-green-600 uppercase">Server: Tokyo-01</span>
+        <div class="bg-green-50 px-3 py-1.5 rounded-full border border-green-100 flex items-center gap-2">
+            <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+            <span class="text-[8px] font-black text-green-600 uppercase">TOKYO-01</span>
         </div>
     </div>
 
-    <div class="nova-card p-6 mb-4 bg-slate-900 text-white relative overflow-hidden shadow-xl border-b-4 border-yellow-600">
-        <div class="absolute -right-4 -top-4 w-24 h-24 bg-yellow-500/10 rounded-full blur-2xl"></div>
+    <div class="nova-card p-8 mb-6 bg-slate-900 text-white relative overflow-hidden shadow-2xl border-b-8 border-[#D4AF37]">
+        <div class="absolute -right-10 -top-10 w-40 h-40 bg-[#D4AF37]/10 rounded-full blur-3xl"></div>
         
-        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mb-1 text-center">Available Liquidity</p>
-        <h1 id="main-bal" class="text-5xl font-extrabold text-white text-center tracking-tighter mb-6">$0.00</h1>
-
-        <div class="grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
-            <div>
-                <p class="text-[8px] text-slate-400 font-bold uppercase mb-1">Daily Yield</p>
-                <p id="v-daily" class="text-sm font-black text-green-400">+$0.00</p>
-            </div>
-            <div class="text-right">
-                <p class="text-[8px] text-slate-400 font-bold uppercase mb-1">Total Profit</p>
-                <p id="total-profit" class="text-sm font-black text-[#D4AF37]">$0.00</p>
+        <div class="relative z-10 text-center">
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[4px] mb-2">Available Liquidity</p>
+            <h1 id="main-bal" class="text-6xl font-black text-white tracking-tighter mb-8">$0.00</h1>
+            
+            <div class="grid grid-cols-2 gap-6 border-t border-white/10 pt-6">
+                <div class="text-left">
+                    <p class="text-[9px] text-slate-400 font-bold uppercase mb-1">Daily Yield</p>
+                    <p id="v-daily" class="text-base font-black text-green-400">+$0.00</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-[9px] text-slate-400 font-bold uppercase mb-1">Total Profit</p>
+                    <p id="total-profit" class="text-base font-black text-[#D4AF37]">$0.00</p>
+                </div>
             </div>
         </div>
 
-        <div class="mt-4 bg-white/5 rounded-xl p-3 flex justify-between items-center border border-white/5">
-            <div class="flex items-center gap-2">
-                <i class="fa-solid fa-clock-rotate-left text-yellow-500 text-[10px]"></i>
-                <span class="text-[8px] font-black text-slate-300 uppercase">Next Yield Cycle</span>
+        <div class="mt-6 bg-white/5 rounded-2xl p-4 flex justify-between items-center border border-white/10">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-yellow-500/10 flex items-center justify-center">
+                    <i class="fa-solid fa-bolt-lightning text-yellow-500 text-xs"></i>
+                </div>
+                <span class="text-[9px] font-black text-slate-300 uppercase">Next Yield In:</span>
             </div>
-            <span id="yield-timer" class="text-[11px] font-mono font-bold text-yellow-500 tracking-widest">23:59:59</span>
+            <span id="yield-timer" class="text-sm font-mono font-black text-yellow-500 tracking-widest">23:59:59</span>
         </div>
     </div>
 
+    <div class="grid grid-cols-2 gap-4 mb-6">
+        <button onclick="openModal('dep-modal')" class="nova-card p-5 flex flex-col items-center gap-3 active:scale-95 transition bg-white hover:bg-slate-50 border-b-4 border-slate-200">
+            <i class="fa-solid fa-plus-circle text-2xl text-[#D4AF37]"></i>
+            <span class="text-[10px] font-black uppercase text-slate-700">Add Funds</span>
+        </button>
+        <button onclick="openModal('wd-modal')" class="nova-card p-5 flex flex-col items-center gap-3 active:scale-95 transition bg-white hover:bg-slate-50 border-b-4 border-slate-200">
+            <i class="fa-solid fa-money-bill-transfer text-2xl text-slate-400"></i>
+            <span class="text-[10px] font-black uppercase text-slate-700">Withdraw</span>
+        </button>
+    </div>
+
+    <div class="nova-card p-6 mb-6 space-y-6 bg-white">
+        <div>
+            <div class="flex justify-between items-center mb-3">
+                <p class="text-[9px] font-black text-slate-400 uppercase">Network Referral Link</p>
+                <span class="text-[8px] font-black text-green-500 bg-green-50 px-2.5 py-1 rounded-lg border border-green-100">+10% BONUS</span>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" id="ref-link" readonly class="p-input mb-0 py-3 text-[10px] font-mono bg-slate-50 border-slate-200 flex-1 rounded-xl" value="https://nova.io/ref=user">
+                <button onclick="copyRef()" class="btn-gold px-5 text-[10px] rounded-xl shadow-lg shadow-yellow-600/20">Copy</button>
+            </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-100">
+            <p class="text-[9px] font-black text-slate-400 uppercase mb-3">Redeem System Voucher</p>
+            <div class="flex gap-2">
+                <input type="text" id="promo-inp" placeholder="ENTER CODE" class="p-input mb-0 py-3 text-[10px] font-bold uppercase border-slate-200 flex-1 rounded-xl">
+                <button onclick="applyPromo()" class="bg-slate-900 text-white px-6 text-[10px] font-black rounded-xl uppercase transition active:scale-95">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="nova-card p-6 mb-6">
+        <h3 class="text-[10px] font-black uppercase mb-5 flex items-center gap-3">
+            <i class="fa-solid fa-chart-line text-[#D4AF37]"></i> Team Performance
+        </h3>
+        <div class="grid grid-cols-3 gap-3">
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-center">
+                <p id="direct-count" class="text-lg font-black text-slate-800">0</p>
+                <p class="text-[8px] font-bold text-slate-400 uppercase">Directs</p>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-center">
+                <p id="team-count" class="text-lg font-black text-slate-800">0</p>
+                <p class="text-[8px] font-bold text-slate-400 uppercase">Team</p>
+            </div>
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 text-center">
+                <p id="team-earn" class="text-lg font-black text-green-600">$0.00</p>
+                <p class="text-[8px] font-bold text-slate-400 uppercase">Comm.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="nova-card p-6 bg-slate-50 border-2 border-slate-100 mb-10 relative overflow-hidden">
+        <div class="flex items-center gap-4 mb-4">
+            <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center p-2.5 border border-slate-100">
+                <img src="https://cdn-icons-png.flaticon.com/512/2583/2583264.png" class="w-full opacity-80">
+            </div>
+            <div>
+                <h3 class="text-[11px] font-black uppercase text-slate-800 tracking-tighter">Nova Infrastructure Ltd.</h3>
+                <p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest">Reg: London, UK #09921820</p>
+            </div>
+        </div>
+        <p class="text-[10px] text-slate-500 leading-relaxed font-medium">
+            Authorized ASIC provider. We deliver institutional-grade cloud hashing solutions with guaranteed 99.9% network stability across global clusters.
+        </p>
+    </div>
+</div>
     <div class="grid grid-cols-2 gap-3 mb-4">
         <button onclick="openModal('dep-modal')" class="nova-card p-4 flex items-center gap-3 active:scale-95 transition bg-white border-b-2 border-slate-200">
             <div class="w-10 h-10 rounded-xl bg-yellow-50 flex items-center justify-center text-yellow-600 shadow-inner">
@@ -112,28 +183,6 @@
             <span class="text-[10px] font-black uppercase text-slate-700">Withdraw</span>
         </button>
     </div>
-
-    <div class="nova-card p-5 mb-4 space-y-4">
-        <div>
-            <div class="flex justify-between items-center mb-2">
-                <p class="text-[8px] font-black text-slate-400 uppercase">Partner Referral Link</p>
-                <span class="text-[7px] font-bold text-green-500 bg-green-50 px-2 py-0.5 rounded border border-green-100">+10% BONUS</span>
-            </div>
-            <div class="flex gap-2">
-                <input type="text" id="ref-link" readonly class="p-input mb-0 py-2.5 text-[9px] font-mono bg-slate-50 border-slate-200 flex-1" value="https://nova.io/join?ref=user">
-                <button onclick="copyRef()" class="btn-gold px-4 text-[9px] rounded-lg">Copy</button>
-            </div>
-        </div>
-
-        <div class="pt-2 border-t border-slate-100">
-            <p class="text-[8px] font-black text-slate-400 uppercase mb-2">Redeem Promo Voucher</p>
-            <div class="flex gap-2">
-                <input type="text" id="promo-input" placeholder="ENTER CODE" class="p-input mb-0 py-2.5 text-[9px] font-bold uppercase border-slate-200 flex-1">
-                <button onclick="applyPromo()" class="bg-slate-900 text-white px-5 text-[9px] font-bold rounded-lg uppercase transition active:scale-95">Apply</button>
-            </div>
-        </div>
-    </div>
-
     <div class="nova-card p-5 mb-4">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-[9px] font-black uppercase flex items-center gap-2">
