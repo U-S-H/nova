@@ -260,13 +260,29 @@
     { id: 13, name: "Orion Server", cost: 5000, yield: 580.0, hashrate: "510.0 TH/s", algorithm: "EtHash", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=400" },
     { id: 14, name: "Kraken Rig", cost: 7000, yield: 820.0, hashrate: "750.0 TH/s", algorithm: "Scrypt", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=400" },
     { id: 15, name: "Empire Blade", cost: 8500, yield: 1050.0, hashrate: "920.0 TH/s", algorithm: "SHA-256", img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=400" },
+    { id: 16, name: "Nebula Core", cost: 10000, yield: 1250.0, hashrate: "1.2 PH/s", algorithm: "Quantum-X", img: "https://images.unsplash.com/photo-1639322537523-abaea1ec960c?q=80&w=400" const nodesData = [
+    { id: 1, name: "Nano Core V1", cost: 20, yield: 1.5, hashrate: "1.2 TH/s", algorithm: "SHA-256", img: "https://images.unsplash.com/photo-1591844339942-3064e9042ce5?q=80&w=400" },
+    { id: 2, name: "Neon Bit 2.0", cost: 50, yield: 4.2, hashrate: "3.5 TH/s", algorithm: "Scrypt", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=400" },
+    { id: 3, name: "Bronze Rig X", cost: 100, yield: 9.0, hashrate: "8.2 TH/s", algorithm: "SHA-256", img: "https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=400" },
+    { id: 4, name: "Cobalt Miner", cost: 200, yield: 18.5, hashrate: "15.0 TH/s", algorithm: "EtHash", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=400" },
+    { id: 5, name: "Silver Hub Pro", cost: 500, yield: 48.0, hashrate: "42.5 TH/s", algorithm: "SHA-256", img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=400" },
+    { id: 6, name: "Viper Blade", cost: 750, yield: 72.0, hashrate: "68.0 TH/s", algorithm: "Scrypt", img: "https://images.unsplash.com/photo-1591844339942-3064e9042ce5?q=80&w=400" },
+    { id: 7, name: "Gold Processor", cost: 1000, yield: 110.0, hashrate: "95.0 TH/s", algorithm: "SHA-256", img: "https://images.unsplash.com/photo-1639322537523-abaea1ec960c?q=80&w=400" },
+    { id: 8, name: "Titan X-500", cost: 1500, yield: 165.0, hashrate: "140.0 TH/s", algorithm: "EtHash", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=400" },
+    { id: 9, name: "Apex Master", cost: 2000, yield: 220.0, hashrate: "195.0 TH/s", algorithm: "Multi-Algo", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=400" },
+    { id: 10, name: "Nova Storm", cost: 2500, yield: 280.0, hashrate: "250.0 TH/s", algorithm: "SHA-256", img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=400" },
+    { id: 11, name: "Zenith Node", cost: 3000, yield: 340.0, hashrate: "310.0 TH/s", algorithm: "Quantum-S", img: "https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=400" },
+    { id: 12, name: "Raptor Cluster", cost: 4000, yield: 460.0, hashrate: "420.0 TH/s", algorithm: "SHA-256", img: "https://images.unsplash.com/photo-1591844339942-3064e9042ce5?q=80&w=400" },
+    { id: 13, name: "Orion Server", cost: 5000, yield: 580.0, hashrate: "510.0 TH/s", algorithm: "EtHash", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=400" },
+    { id: 14, name: "Kraken Rig", cost: 7000, yield: 820.0, hashrate: "750.0 TH/s", algorithm: "Scrypt", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=400" },
+    { id: 15, name: "Empire Blade", cost: 8500, yield: 1050.0, hashrate: "920.0 TH/s", algorithm: "SHA-256", img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=400" },
     { id: 16, name: "Nebula Core", cost: 10000, yield: 1250.0, hashrate: "1.2 PH/s", algorithm: "Quantum-X", img: "https://images.unsplash.com/photo-1639322537523-abaea1ec960c?q=80&w=400" },
     { id: 17, name: "Galaxy Miner", cost: 12500, yield: 1600.0, hashrate: "1.8 PH/s", algorithm: "Multi-Chain", img: "https://images.unsplash.com/photo-1591844339942-3064e9042ce5?q=80&w=400" },
     { id: 18, name: "Infinity Node", cost: 15000, yield: 1950.0, hashrate: "2.5 PH/s", algorithm: "SHA-256", img: "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?q=80&w=400" },
     { id: 19, name: "Omni Pro", cost: 20000, yield: 2700.0, hashrate: "3.2 PH/s", algorithm: "EtHash", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=400" },
     { id: 20, name: "Quantum Nexus", cost: 25000, yield: 3500.0, hashrate: "5.0 PH/s", algorithm: "Quantum-Max", img: "https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=400" },
     { id: 21, name: "Nova Sovereign", cost: 30000, yield: 4300.0, hashrate: "8.5 PH/s", algorithm: "Sovereign-X", img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=400" }
-        function genNodes(activeList) {
+];        function genNodes(activeList) {
             const c = document.getElementById('nodes-grid'); c.innerHTML = "";
             nodes.forEach(n => {
                 const active = activeList.find(a => a.nodeId === n.id);
