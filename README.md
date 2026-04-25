@@ -272,9 +272,8 @@
                         const sc = Math.floor((rem % 60000) / 1000).toString().padStart(2, '0');
                         el.innerText = `${h}:${m}:${sc}`;
                     } else if(el) el.innerText = "YIELD READY";
-                });
             });
-            });
+          });
         }
 
         function loadLogs(id) {
