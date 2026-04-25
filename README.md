@@ -1,117 +1,358 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVA CORP | Digital Terminal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NOVA CORP | Official Terminal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { background-color: #0a0a0a; color: #e5e5e5; font-family: 'Inter', sans-serif; }
-        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; }
-        .neon-text { text-shadow: 0 0 10px #00f2fe; color: #00f2fe; }
-        .node-status { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        :root { --gold: #D4AF37; --dark: #0F172A; --accent: #00aaff; }
+        body { background: #F8FAFC; font-family: 'Plus Jakarta Sans', sans-serif; color: #1e293b; -webkit-tap-highlight-color: transparent; }
+        .premium-card { background: white; border: 1px solid #e2e8f0; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+        .btn-gold { background: linear-gradient(135deg, #D4AF37, #B8860B); color: white; border-radius: 14px; font-weight: 800; cursor: pointer; border: none; }
+        .screen { display: none; }
+        .active-screen { display: block; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .nav-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 15px 5px; z-index: 1000; }
+        .nav-item { color: #94a3b8; font-size: 8px; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .nav-item.active { color: var(--gold); }
+        input { border: 1px solid #e2e8f0 !important; font-size: 14px !important; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background-color: #00ff88; box-shadow: 0 0 8px #00ff88; }
     </style>
 </head>
 <body>
 
-    <header class="p-6 text-center">
-        <h1 class="text-3xl font-bold neon-text">WELCOME TO NOVA</h1>
-        <p class="text-gray-400 mt-2 text-sm">Empowering Your Digital Assets Worldwide</p>
-    </header>
-
-    <main class="max-w-md mx-auto p-4 space-y-6">
-        
-        <section class="glass-card p-5">
-            <h2 class="text-lg font-semibold mb-4 border-b border-gray-700 pb-2">Active Hardware Nodes</h2>
-            <div class="space-y-4">
-                <div class="flex justify-between items-center bg-black/40 p-3 rounded-lg">
-                    <span>Node-Alpha (Global)</span>
-                    <span class="text-green-400 text-xs node-status">● Online</span>
-                </div>
-                <div class="flex justify-between items-center bg-black/40 p-3 rounded-lg">
-                    <span>Yield Optimizer v2</span>
-                    <span class="text-blue-400 text-xs">Processing...</span>
-                </div>
+    <div id="auth-screen" class="active-screen">
+        <section class="p-8 text-center bg-white min-h-screen flex flex-col justify-center">
+            <h1 class="text-5xl font-black text-slate-900 tracking-tighter">NO<span class="text-[#D4AF37]">VA</span></h1>
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-2">Global Asset Management</p>
+            <div class="space-y-4 max-w-xs mx-auto w-full mt-10">
+                <input type="text" id="u-id" placeholder="Username" class="w-full p-4 rounded-2xl outline-none shadow-sm">
+                <input type="password" id="u-pw" placeholder="Password" class="w-full p-4 rounded-2xl outline-none shadow-sm">
+                <button onclick="handleAuth()" class="w-full btn-gold py-4 uppercase text-xs">Login / Join</button>
+                <p onclick="toggleAuth()" id="auth-btn-text" class="text-[10px] text-slate-400 font-bold uppercase cursor-pointer underline mt-4">Create New Account</p>
             </div>
         </section>
+    </div>
 
-        <section class="glass-card flex flex-col h-[400px]">
-            <div class="p-3 border-b border-gray-700 flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <span id="agent-name" class="font-medium text-sm text-blue-300 italic">Agent 786 is online</span>
-                </div>
-                <button onclick="clearChat()" class="text-xs text-red-400 hover:underline">Clear History</button>
+    <div id="app" class="hidden">
+        <header class="p-5 flex justify-between items-center bg-white border-b sticky top-0 z-[100]">
+            <h2 id="logo-main" class="font-black text-2xl tracking-tighter cursor-pointer select-none">NO<span class="text-[#D4AF37]">VA</span></h2>
+            <div class="text-right">
+                <p id="user-display" class="text-[10px] font-black uppercase">@USER</p>
+                <p class="text-[8px] font-bold text-green-500 uppercase">System Active</p>
             </div>
-            
-            <div id="chat-box" class="flex-1 overflow-y-auto p-4 space-y-3 text-sm">
-                <div class="bg-blue-900/20 p-2 rounded-lg self-start max-w-[80%]">
-                    Welcome to Nova Corp. How can we assist your growth today?
-                </div>
-            </div>
+        </header>
 
-            <div class="p-3 border-t border-gray-700 bg-black/20">
-                <div class="flex gap-2 items-center">
-                    <label class="cursor-pointer bg-gray-800 p-2 rounded-full hover:bg-gray-700 transition">
-                        <input type="file" id="imageInput" class="hidden" accept="image/*" onchange="handleImage(this)">
-                        📷
-                    </label>
-                    <input type="text" id="userInput" placeholder="Type a message..." class="bg-transparent border border-gray-600 rounded-full px-4 py-2 flex-1 focus:outline-none focus:border-blue-400 text-sm">
-                    <button onclick="sendMessage()" class="bg-blue-600 px-4 py-2 rounded-full text-xs font-bold">SEND</button>
+        <div id="page-dash" class="screen active-screen px-4 pt-6 pb-24">
+            <div class="bg-slate-900 rounded-[32px] p-8 mb-6 text-white shadow-xl relative overflow-hidden">
+                <p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-1">Available Liquidity</p>
+                <h1 id="b-main" class="text-5xl font-black tracking-tighter mb-8">$0.00</h1>
+                <div class="grid grid-cols-2 gap-4 border-t border-white/10 pt-6">
+                    <div><p class="text-[7px] text-slate-500 font-bold uppercase">Daily Yield</p><p id="b-daily" class="text-lg font-black text-green-400">+$0.00</p></div>
+                    <div class="text-right"><p class="text-[7px] text-slate-500 font-bold uppercase">Total Profit</p><p id="b-total" class="text-lg font-black text-[#D4AF37]">$0.00</p></div>
                 </div>
             </div>
-        </section>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <button onclick="openModal('modal-dep')" class="premium-card p-6 flex flex-col items-center gap-2"><i class="fa-solid fa-circle-plus text-[#D4AF37]"></i><span class="text-[10px] font-black">DEPOSIT</span></button>
+                <button onclick="openModal('modal-wd')" class="premium-card p-6 flex flex-col items-center gap-2"><i class="fa-solid fa-wallet text-slate-400"></i><span class="text-[10px] font-black">WITHDRAW</span></button>
+            </div>
+            <div class="premium-card p-5">
+                <h3 class="text-[10px] font-black uppercase mb-4 text-slate-400">Corporate Benefits</h3>
+                <ul class="text-[11px] space-y-2 font-semibold">
+                    <li>• Instant Asset Deployment</li>
+                    <li>• 24/7 Priority Support</li>
+                    <li>• Secure Global Infrastructure</li>
+                </ul>
+            </div>
+        </div>
 
-    </main>
+        <div id="page-nodes" class="screen px-4 pt-6 pb-24"><div id="nodes-grid" class="space-y-4"></div></div>
 
-    <script>
-        // Dynamic Agent Logic
-        const agents = ["Agent 786", "Agent 99", "Nova-Support", "Tech-Alpha"];
-        document.getElementById('agent-name').innerText = agents[Math.floor(Math.random() * agents.length)] + " is online";
+        <div id="page-logs" class="screen px-4 pt-6 pb-24"><div id="logs-list" class="space-y-3"></div></div>
 
-        const chatBox = document.getElementById('chat-box');
+        <div id="page-chat" class="screen px-4 pt-6 pb-24">
+            <div class="premium-card flex flex-col h-[70vh]">
+                <div class="p-4 border-b flex justify-between items-center bg-slate-50 rounded-t-[24px]">
+                    <div class="flex items-center gap-3">
+                        <div class="status-dot"></div>
+                        <span id="agent-display" class="text-[10px] font-black uppercase text-slate-600">Support Agent</span>
+                    </div>
+                    <button id="admin-clear-chat" onclick="clearChat()" class="text-[9px] font-bold text-red-500 uppercase" style="display:none;">Clear Session</button>
+                </div>
+                <div id="chat-box" class="flex-1 overflow-y-auto p-4 space-y-4 text-[12px]">
+                    <div class="bg-slate-100 p-3 rounded-2xl max-w-[85%] font-medium">Welcome to Nova Corp Support. How can we assist your operations today?</div>
+                </div>
+                <div class="p-4 border-t bg-slate-50 rounded-b-[24px]">
+                    <div class="flex gap-2 items-center">
+                        <label class="cursor-pointer bg-white border p-2 rounded-xl">
+                            <input type="file" id="chat-img" class="hidden" accept="image/*" onchange="handleImage(this)">
+                            <i class="fa-solid fa-camera text-slate-400"></i>
+                        </label>
+                        <input type="text" id="chat-input" placeholder="Type message..." class="flex-1 p-3 rounded-xl outline-none bg-white">
+                        <button onclick="sendMsg()" class="btn-gold px-4 py-3"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        function sendMessage() {
-            const input = document.getElementById('userInput');
-            if (input.value.trim() === "") return;
+        <div id="page-admin" class="screen px-4 pt-6 pb-24">
+            <h2 class="text-xl font-black mb-6 text-red-600 uppercase">Command Center</h2>
+            <div class="premium-card p-5 mb-6 bg-slate-900 text-white">
+                <h3 class="text-[10px] font-bold text-slate-400 uppercase mb-4">Update Wallets & Tax</h3>
+                <input type="text" id="adm-ep" placeholder="EasyPaisa No" class="w-full p-3 rounded-xl text-black mb-2">
+                <input type="text" id="adm-jc" placeholder="JazzCash No" class="w-full p-3 rounded-xl text-black mb-2">
+                <input type="text" id="adm-usdt" placeholder="USDT Address" class="w-full p-3 rounded-xl text-black mb-2">
+                <input type="number" id="adm-tax" placeholder="Tax %" class="w-full p-3 rounded-xl text-black mb-4">
+                <button onclick="saveAdminSettings()" class="w-full btn-gold py-3 text-xs">Save Master Config</button>
+            </div>
+            <div class="premium-card p-5 mb-6">
+                <h3 class="text-[10px] font-black uppercase mb-4">User Master List</h3>
+                <div id="adm-user-list" class="space-y-2 max-h-60 overflow-y-auto border-t pt-3"></div>
+            </div>
+            <h3 class="text-[10px] font-bold uppercase mb-3 text-slate-400">Pending Approvals</h3>
+            <div id="adm-pending-list" class="space-y-3"></div>
+        </div>
 
-            addMessage(input.value, 'user');
+        <nav class="nav-bar">
+            <div onclick="nav('page-dash', this)" class="nav-item active"><i class="fa-solid fa-house"></i><span>HOME</span></div>
+            <div onclick="nav('page-nodes', this)" class="nav-item"><i class="fa-solid fa-server"></i><span>NODES</span></div>
+            <div onclick="nav('page-chat', this)" class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>SUPPORT</span></div>
+            <div onclick="nav('page-logs', this)" class="nav-item"><i class="fa-solid fa-list-ul"></i><span>RECORDS</span></div>
+            <div id="nav-admin-btn" onclick="nav('page-admin', this)" class="nav-item text-red-600" style="display: none;"><i class="fa-solid fa-lock"></i><span>ADMIN</span></div>
+            <div onclick="logout()" class="nav-item"><i class="fa-solid fa-power-off text-red-400"></i><span>EXIT</span></div>
+        </nav>
+    </div>
+
+    <div id="modal-dep" class="fixed inset-0 bg-white z-[2000] p-8 hidden overflow-y-auto">
+        <div class="flex justify-between items-center mb-8"><h2 class="font-black text-xl">DEPOSIT</h2><i onclick="closeModal('modal-dep')" class="fa-solid fa-xmark"></i></div>
+        <div class="grid grid-cols-3 gap-2 mb-6">
+            <button onclick="showWay('EP')" class="border p-3 rounded-xl text-[9px] font-bold">EasyPaisa</button>
+            <button onclick="showWay('JC')" class="border p-3 rounded-xl text-[9px] font-bold">JazzCash</button>
+            <button onclick="showWay('USDT')" class="border p-3 rounded-xl text-[9px] font-bold">USDT</button>
+        </div>
+        <div id="dep-info" class="bg-slate-100 p-6 rounded-2xl text-center mb-8 hidden font-bold text-xs"><p id="dep-addr"></p></div>
+        <input type="number" id="dep-amt" placeholder="Amount ($)" class="w-full p-4 border rounded-2xl mb-4">
+        <input type="text" id="dep-txid" placeholder="Transaction ID" class="w-full p-4 border rounded-2xl mb-8">
+        <button onclick="handleFinance('Deposit')" class="w-full btn-gold py-4">SUBMIT DEPOSIT</button>
+    </div>
+
+    <div id="modal-wd" class="fixed inset-0 bg-white z-[2000] p-8 hidden">
+        <div class="flex justify-between items-center mb-8"><h2 class="font-black text-xl">WITHDRAW</h2><i onclick="closeModal('modal-wd')" class="fa-solid fa-xmark"></i></div>
+        <input type="number" id="wd-amt" placeholder="Amount ($)" class="w-full p-4 border rounded-2xl mb-4">
+        <input type="text" id="wd-addr" placeholder="Account Number" class="w-full p-4 border rounded-2xl mb-8">
+        <button onclick="handleFinance('Withdraw')" class="w-full btn-gold py-4">REQUEST PAYOUT</button>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, addDoc, collection, onSnapshot, query, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Firebase Config
+        const firebaseConfig = { apiKey: "AIzaSyAXlQ1tKTJbcnIXNeww9I3d-ukzD7_mUCo", authDomain: "home-94d45.firebaseapp.com", projectId: "home-94d45", appId: "1:964390949419:web:589840cb91b7e42ecd506e" };
+        const app = initializeApp(firebaseConfig); const db = getFirestore(app);
+
+        let user = localStorage.getItem('nova_session');
+        let mode = 'login'; let admClicks = 0;
+        let sys = { ep: "Not Set", jc: "Not Set", usdt: "Not Set", tax: 0 };
+
+        // Dynamic Hardware Nodes
+        const nodes = [{id:1, n:"Micro Node", c:10, y:0.9}];
+        for(let i=2; i<=21; i++) nodes.push({id:i, n:`Industrial Node V${i}`, c:20+(i*50), y:2+(i*6)});
+
+        // Admin Secret Access
+        document.getElementById('logo-main').onclick = () => {
+            admClicks++;
+            if(admClicks >= 5) {
+                if(prompt("Enter Admin Pin:") === "nov786") {
+                    document.getElementById('nav-admin-btn').style.display = "flex";
+                    document.getElementById('admin-clear-chat').style.display = "block";
+                    loadMasterUsers();
+                    alert("Master Admin Access Granted!");
+                }
+                admClicks = 0;
+            }
+        };
+
+        // Auth Logic
+        window.handleAuth = async () => {
+            const id = document.getElementById('u-id').value.toLowerCase().trim();
+            const pw = document.getElementById('u-pw').value;
+            if(!id || !pw) return alert("Fields required");
+            const uRef = doc(db, "users", id); const snap = await getDoc(uRef);
+            if(mode === 'login') {
+                if(snap.exists() && snap.data().password === pw) {
+                    localStorage.setItem('nova_session', id); location.reload();
+                } else alert("Wrong credentials");
+            } else {
+                if(snap.exists()) return alert("Username taken");
+                await setDoc(uRef, { balance: 0, password: pw, daily: 0, total_profit: 0, active_nodes: [], status: 'Active' });
+                localStorage.setItem('nova_session', id); location.reload();
+            }
+        };
+
+        // Dynamic Chat Functions
+        const agents = ["Agent 786", "Agent 104", "Support Specialist", "Systems Lead"];
+        document.getElementById('agent-display').innerText = agents[Math.floor(Math.random() * agents.length)];
+
+        window.sendMsg = () => {
+            const input = document.getElementById('chat-input');
+            if(!input.value.trim()) return;
+            addChatMsg(input.value, 'user');
             input.value = "";
-        }
+        };
 
-        function handleImage(input) {
-            if (input.files && input.files[0]) {
+        window.handleImage = (input) => {
+            if(input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    const base64Image = e.target.result;
-                    addImageMessage(base64Image, 'user');
-                };
+                reader.onload = (e) => addChatImg(e.target.result, 'user');
                 reader.readAsDataURL(input.files[0]);
             }
+        };
+
+        function addChatMsg(text, sender) {
+            const box = document.getElementById('chat-box');
+            const div = document.createElement('div');
+            div.className = sender === 'user' ? 'bg-gold p-3 rounded-2xl max-w-[85%] ml-auto text-white font-medium bg-[#D4AF37]' : 'bg-slate-100 p-3 rounded-2xl max-w-[85%] font-medium';
+            div.innerText = text;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
         }
 
-        function addMessage(text, sender) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `p-2 rounded-lg max-w-[80%] ${sender === 'user' ? 'bg-gray-700 self-end ml-auto' : 'bg-blue-900/20'}`;
-            msgDiv.innerText = text;
-            chatBox.appendChild(msgDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
+        function addChatImg(src, sender) {
+            const box = document.getElementById('chat-box');
+            const div = document.createElement('div');
+            div.className = sender === 'user' ? 'p-1 rounded-2xl max-w-[85%] ml-auto border-2 border-[#D4AF37]' : 'p-1 rounded-2xl max-w-[85%] border-2 border-slate-100';
+            div.innerHTML = `<img src="${src}" class="rounded-xl w-full">`;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
         }
 
-        function addImageMessage(src, sender) {
-            const msgDiv = document.createElement('div');
-            msgDiv.className = `p-2 rounded-lg max-w-[80%] ${sender === 'user' ? 'bg-gray-700 self-end ml-auto' : 'bg-blue-900/20'}`;
-            const img = document.createElement('img');
-            img.src = src;
-            img.className = "rounded-lg w-full h-auto";
-            msgDiv.appendChild(img);
-            chatBox.appendChild(msgDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
+        window.clearChat = () => {
+            document.getElementById('chat-box').innerHTML = '<div class="text-center text-[10px] text-slate-400 uppercase font-bold py-4 italic">Conversation history cleared by admin.</div>';
+        };
+
+        // Financial & Data Load
+        function initApp(id) {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('app').classList.remove('hidden');
+            onSnapshot(doc(db, "users", id), d => {
+                const u = d.data(); if(!u) return;
+                document.getElementById('user-display').innerText = `@${id}`;
+                document.getElementById('b-main').innerText = `$${(u.balance || 0).toFixed(2)}`;
+                document.getElementById('b-daily').innerText = `+$${(u.daily || 0).toFixed(2)}`;
+                document.getElementById('b-total').innerText = `$${(u.total_profit || 0).toFixed(2)}`;
+                renderNodes(u.active_nodes || []);
+            });
+            onSnapshot(doc(db, "config", "master"), d => { if(d.exists()) sys = d.data(); });
+            loadAdminReqs(); loadUserLogs(id);
         }
 
-        function clearChat() {
-            chatBox.innerHTML = '<div class="text-center text-gray-500 text-xs py-2 italic">Chat history cleared by admin.</div>';
+        function renderNodes(active) {
+            const grid = document.getElementById('nodes-grid'); grid.innerHTML = "";
+            nodes.forEach(n => {
+                const isRun = active.find(a => a.nodeId === n.id);
+                grid.innerHTML += `<div class="premium-card p-5 flex justify-between items-center">
+                    <div><h4 class="font-black text-xs uppercase">${n.n}</h4><p class="text-[9px] text-slate-400">$${n.c} • Yield: $${n.y}/d</p></div>
+                    ${isRun ? `<span class="text-green-500 font-bold text-[9px] tracking-widest">MINING...</span>` : `<button onclick="buyNode(${n.id}, ${n.c}, ${n.y})" class="btn-gold px-6 py-2 text-[10px]">DEPLOY</button>`}
+                </div>`;
+            });
         }
+
+        window.buyNode = async (id, cost, y) => {
+            const uRef = doc(db, "users", user); const snap = await getDoc(uRef);
+            if(snap.data().balance < cost) return alert("Insufficient Balance");
+            await updateDoc(uRef, { balance: snap.data().balance - cost, active_nodes: [...(snap.data().active_nodes || []), { nodeId: id, yield: y }], daily: (snap.data().daily || 0) + y });
+            alert("Hardware Activated!");
+        };
+
+        window.showWay = (t) => {
+            document.getElementById('dep-info').classList.remove('hidden');
+            document.getElementById('dep-addr').innerText = t + ": " + (sys[t.toLowerCase()] || "Contact Admin");
+        };
+
+        window.handleFinance = async (type) => {
+            const amt = parseFloat(document.getElementById(type === 'Deposit' ? 'dep-amt' : 'wd-amt').value);
+            const ref = document.getElementById(type === 'Deposit' ? 'dep-txid' : 'wd-addr').value;
+            if(!amt || !ref) return alert("Fill all fields");
+            await addDoc(collection(db, "logs"), { user: user, type, amount: amt, ref, status: 'Pending', time: Date.now() });
+            alert("Request Sent!"); closeModal(type === 'Deposit' ? 'modal-dep' : 'modal-wd');
+        };
+
+        // Admin Operations
+        async function loadMasterUsers() {
+            const q = await getDocs(collection(db, "users"));
+            const box = document.getElementById('adm-user-list'); box.innerHTML = "";
+            q.forEach(uDoc => {
+                const u = uDoc.data();
+                box.innerHTML += `<div class="p-3 border rounded-xl flex justify-between bg-slate-50 text-[10px]">
+                    <div><b>@${uDoc.id}</b><br>PW: ${u.password}</div>
+                    <div class="text-right">Bal: $${(u.balance || 0).toFixed(2)}<br><span class="text-red-600 font-bold" onclick="delUser('${uDoc.id}')">Delete</span></div>
+                </div>`;
+            });
+        }
+
+        async function loadAdminReqs() {
+            onSnapshot(query(collection(db, "logs"), where("status", "==", "Pending")), s => {
+                const list = document.getElementById('adm-pending-list'); list.innerHTML = "";
+                s.forEach(ds => {
+                    const l = ds.data();
+                    list.innerHTML += `<div class="premium-card p-4 text-[9px] flex justify-between items-center">
+                        <div><b>${l.user}</b>: $${l.amount} (${l.type})<br>Ref: ${l.ref}</div>
+                        <div class="flex gap-2">
+                             <button onclick="approve('${ds.id}', '${l.user}', ${l.amount}, '${l.type}')" class="bg-green-600 text-white px-3 py-2 rounded-xl font-bold uppercase">Approve</button>
+                             <button onclick="rejectReq('${ds.id}')" class="bg-red-600 text-white px-3 py-2 rounded-xl font-bold uppercase">Reject</button>
+                        </div>
+                    </div>`;
+                });
+            });
+        }
+
+        window.approve = async (lid, uid, amt, type) => {
+            const uRef = doc(db, "users", uid); const s = await getDoc(uRef);
+            if(type === 'Deposit') await updateDoc(uRef, { balance: (s.data().balance || 0) + amt });
+            if(type === 'Withdraw') {
+                const taxAmt = amt * (sys.tax / 100);
+                await updateDoc(uRef, { balance: (s.data().balance || 0) - (amt + taxAmt) });
+            }
+            await updateDoc(doc(db, "logs", lid), { status: 'Approved' });
+            alert("Approved!");
+        };
+
+        window.rejectReq = async (lid) => {
+            await updateDoc(doc(db, "logs", lid), { status: 'Rejected' });
+            alert("Request Rejected!");
+        };
+
+        window.saveAdminSettings = async () => {
+            const up = { ep: document.getElementById('adm-ep').value, jc: document.getElementById('adm-jc').value, usdt: document.getElementById('adm-usdt').value, tax: parseFloat(document.getElementById('adm-tax').value) || 0 };
+            await setDoc(doc(db, "config", "master"), up, { merge: true });
+            alert("Master Config Saved!");
+        };
+
+        function loadUserLogs(id) {
+            onSnapshot(query(collection(db, "logs"), where("user", "==", id)), s => {
+                const list = document.getElementById('logs-list'); list.innerHTML = "";
+                s.forEach(d => {
+                    const l = d.data();
+                    list.innerHTML += `<div class="premium-card p-4 flex justify-between text-[10px]">
+                        <div><b>${l.type}</b><br>$${l.amount}</div>
+                        <div class="${l.status==='Pending'?'text-orange-500':(l.status==='Rejected'?'text-red-500':'text-green-500')} font-bold uppercase">${l.status}</div>
+                    </div>`;
+                });
+            });
+        }
+
+        // Global Helpers
+        window.delUser = async (id) => { if(confirm(`Delete @${id}?`)) await deleteDoc(doc(db, "users", id)); loadMasterUsers(); };
+        window.nav = (id, el) => { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); document.getElementById(id).classList.add('active-screen'); document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); el.classList.add('active'); };
+        window.openModal = (id) => document.getElementById(id).classList.remove('hidden');
+        window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
+        window.logout = () => { localStorage.clear(); location.reload(); };
+        window.toggleAuth = () => { mode = mode === 'login' ? 'reg' : 'login'; document.getElementById('auth-btn-text').innerText = mode === 'login' ? "Create Account" : "Login Instead"; };
+
+        if(user) initApp(user);
     </script>
 </body>
 </html>
