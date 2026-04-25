@@ -99,7 +99,7 @@
 
         <div id="scr-about" class="screen px-6 pt-8">
             <div class="glass-card p-8 space-y-6 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1551288049-bbbda536339a?w=800" class="rounded-[35px] w-full h-44 object-cover">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600" class="rounded-[35px] w-full h-44 object-cover">
                 <h4 class="font-black text-xl uppercase italic">Nova Corp International</h4>
                 <p class="text-[11px] text-slate-500 font-bold leading-relaxed">Nova Corp is a leading UK-based fintech firm specializing in decentralized cloud mining since 2021. Our platform bridge the gap between complex blockchain tech and everyday investors.</p>
                 <div class="grid grid-cols-3 gap-2 py-4 border-y border-slate-100">
